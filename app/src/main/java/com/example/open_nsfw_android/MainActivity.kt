@@ -16,7 +16,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         //assets 目录下的timg-10.jpeg为正常静态图片  ccc.gif 为动态正常图片 可用作测试
-        val b = BitmapFactory.decodeStream(getResources().getAssets().open("ccc.gif"))
+        val b = BitmapFactory.decodeStream(getResources().getAssets().open("aaa.png"))
         iv.setImageBitmap(b)
         nsfwHelper = NsfwHelper.getInstance(this, true, 1)
 

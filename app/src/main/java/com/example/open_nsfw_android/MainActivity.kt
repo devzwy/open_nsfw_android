@@ -28,8 +28,7 @@ class MainActivity : AppCompatActivity() {
             tvv.setText("识别成功：\n\tSFW score : ${nsfwBean?.sfw}\n\tNSFW score : ${nsfwBean?.nsfw}")
             if (nsfwBean?.nsfw ?: 0f > 0.7) {
                 tvv.text = "${tvv.text.toString()} \n \t - 色情图片"
-            }else
-            {
+            }else {
                 tvv.text = "${tvv.text.toString()} \n \t - 正常图片"
             }
 //            //异步识别，接口回调识别结果

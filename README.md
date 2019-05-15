@@ -19,7 +19,8 @@
 
 ```
 	dependencies {
-	        implementation 'com.github.devzwy:open_nsfw_android:Tag'
+	         //versionCode：上面小icon中最新版本号
+	        implementation 'com.github.devzwy:open_nsfw_android:[versionCode]'
 	}
 
 ```

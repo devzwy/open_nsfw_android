@@ -4,6 +4,22 @@
 
 ### 色情图片离线识别，基于TensorFlow实现。识别只需200ms,可断网测试，成功率100%，调用只要一行代码，从雅虎的开源项目open_nsfw_python移植，tflite（6M）为训练好的模型，可用于iOS平台
 
+### 使用
+- Add it in your root build.gradle at the end of repositories:
+```
+	allprojects {
+		repositories {
+			...
+			maven { url 'https://jitpack.io' }
+		}
+	}
+```
+- Add the dependency
+```
+	dependencies {
+		implementation 'com.github.User:Repo:Tag'
+	}
+```
 ```
 val nsfwBean = NsfwHelper.getInstance(this, true, 1).scanBitmapSyn(bitmap)
     nsfwBean?.sfw ...

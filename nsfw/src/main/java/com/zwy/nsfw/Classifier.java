@@ -154,8 +154,49 @@ public abstract class Classifier {
         Log.d(TAG, "Timecost to put values into ByteBuffer: " + (endTime - startTime) + "ms");
     }
 
+    private void pross(int[] data){
+        int pixel = 0;
+        long startTime = SystemClock.uptimeMillis();
+        for (int i = 0; i < getImageSizeX(); ++i) {
+            for (int j = 0; j < getImageSizeY(); ++j) {
+
+                //操作每一个像素
+                //拿出每一个像素点对应的R、G、B的int值
+                //对每一个int值减去阈值 R-123  B-104  G-117
+                //将R、G、B 利用 B、G、R顺序重新写入数组
+                //将数组传入tflite获取回传结果
+                final int color = data[pixel++];
+                int r1 = Color.red(color) - 123;
+                int g1 = Color.green(color) - 117;
+                int b1 = Color.blue(color) - 104;
+
+                imgData.putFloat(b1);
+                imgData.putFloat(g1);
+                imgData.putFloat(r1);
+            }
+        }
+        long endTime = SystemClock.uptimeMillis();
+        Log.d(TAG, "Timecost to put values into ByteBuffer: " + (endTime - startTime) + "ms");
+    }
+
     public NsfwBean run(Bitmap bitmap) {
         convertBitmapToByteBuffer(bitmap);
+        long startTime = SystemClock.uptimeMillis();
+        float[][] labelProbArray = new float[1][2];
+        tflite.run(imgData, labelProbArray);
+        long endTime = SystemClock.uptimeMillis();
+        Log.d(TAG, "Timecost to run model inference: " + (endTime - startTime) + "ms");
+        return new NsfwBean(labelProbArray[0][0], labelProbArray[0][1]);
+    }
+
+
+    /**
+     * 224 * 224 int颜色值
+     * @param data
+     * @return
+     */
+    public NsfwBean run(int[] data){
+        pross(data);
         long startTime = SystemClock.uptimeMillis();
         float[][] labelProbArray = new float[1][2];
         tflite.run(imgData, labelProbArray);

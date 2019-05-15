@@ -22,7 +22,6 @@ class MainActivity : AppCompatActivity() {
         iv.setImageBitmap(b)
         nsfwHelper = NsfwHelper.getInstance(this, true, 1)
 
-
         bt_.setOnClickListener {
             //同步识别
             val nsfwBean = nsfwHelper?.scanBitmapSyn(b)

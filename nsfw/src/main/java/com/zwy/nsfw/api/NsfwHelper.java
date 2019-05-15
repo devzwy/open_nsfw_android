@@ -37,10 +37,6 @@ public class NsfwHelper {
         return classifier.run(bitmap);
     }
 
-    public NsfwBean scanByIntColorsSyn(int[] colors){
-        return classifier.run(colors);
-    }
-
 
     public void scanBitmap(final Bitmap bitmap, final OnScanBitmapListener onScanBitmapListener) {
         new Thread(new Runnable() {

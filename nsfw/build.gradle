@@ -17,10 +17,6 @@ android {
             }
         }
         ndk {
-
-            // Specifies the ABI configurations of your native
-            // libraries Gradle should build and package with your APK.
-//           abiFilters 'x86', 'x86_64', 'armeabi', 'armeabi-v7a', 'arm64-v8a', 'mips', 'mips64'
             abiFilters 'armeabi-v7a'
         }
     }

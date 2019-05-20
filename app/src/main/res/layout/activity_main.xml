@@ -1,27 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:gravity="center"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-    <ImageView android:layout_width="match_parent"
-
-               android:id="@+id/iv" android:layout_height="300dp"/>
-    <Button android:layout_width="wrap_content"
-            android:layout_below="@+id/iv"
-            android:layout_centerHorizontal="true"
-            android:text="点击识别图片"
-            android:id="@+id/bt_"
-            android:gravity="center"
-            android:layout_height="wrap_content"/>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
     <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-              android:layout_below="@+id/bt_"
-              android:id="@+id/tv_"
+              android:textSize="18sp"
+              android:id="@+id/tv_start"
+              android:gravity="center"
+              android:layout_gravity="center"
               android:padding="20dp"
-              android:text="sfw:适宜在公共场所浏览，nsfw:不适宜在公共场所浏览，两者都是0-1中间的浮点型值，nsfw数值越大表示色情程度越高，sfw反之"/>
-    <TextView
-            android:id="@+id/tvv"
-            android:layout_below="@+id/tv_" android:layout_width="match_parent" android:layout_height="match_parent"/>
+              android:text="点击开始识别Assets下的测试图片"/>
+    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+              android:text="sfw:适宜在公共场所浏览，nsfw:不适宜在公共场所浏览，两者都是0-1中间的浮点型值，nsfw数值越大表示色情程度越高，sfw反之"
+              android:padding="15dp"
+              android:textSize="14sp"/>
+    <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    <!--<ScrollView android:layout_width="match_parent" android:layout_height="match_parent">-->
+    <!--<LinearLayout android:layout_width="match_parent"-->
+    <!--android:orientation="vertical" android:layout_height="match_parent">-->
+    <!--<Button android:layout_width="wrap_content"-->
+    <!--android:layout_centerHorizontal="true"-->
+    <!--android:text="点击开始识别Assets下的测试图片"-->
+    <!--android:layout_gravity="center"-->
+    <!--android:id="@+id/bt_"-->
+    <!--android:gravity="center"-->
+    <!--android:layout_height="wrap_content"/>-->
+    <!--<TextView android:layout_width="wrap_content" android:layout_height="wrap_content"-->
+    <!--android:layout_below="@+id/bt_"-->
+    <!--android:id="@+id/tv_"-->
+    <!--android:padding="20dp"-->
+    <!--android:text="sfw:适宜在公共场所浏览，nsfw:不适宜在公共场所浏览，两者都是0-1中间的浮点型值，nsfw数值越大表示色情程度越高，sfw反之"/>-->
+    <!--<TextView-->
+    <!--android:id="@+id/tvv"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:padding="20dp"-->
+    <!--android:textColor="@color/colorAccent"-->
+    <!--android:textSize="16sp"-->
+    <!--android:layout_height="match_parent"/>-->
+
+    <!--</LinearLayout>-->
+    <!--</ScrollView>-->
 
 
-</RelativeLayout>
+</LinearLayout>

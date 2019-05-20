@@ -63,4 +63,5 @@ task nativeLibsToJar(type: Jar, description: 'create a jar archive of the native
 }
 tasks.withType(JavaCompile) {
     compileTask -> compileTask.dependsOn(nativeLibsToJar)
+//    implementation project(path: ':openCVLibrary340')
 }

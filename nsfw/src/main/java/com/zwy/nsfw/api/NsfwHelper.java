@@ -33,11 +33,26 @@ public class NsfwHelper {
         }
     }
 
+
+    /**
+     * 同步扫描
+     *
+     * @param bitmap
+     * @return nsfw/sfw
+     */
     public NsfwBean scanBitmapSyn(Bitmap bitmap) {
-        return classifier.run(bitmap);
+        synchronized (NsfwHelper.class) {
+            return classifier.run(bitmap);
+        }
     }
 
 
+    /**
+     * 异步扫描
+     *
+     * @param bitmap
+     * @param onScanBitmapListener void onSuccess(float sfw, float nsfw);
+     */
     public void scanBitmap(final Bitmap bitmap, final OnScanBitmapListener onScanBitmapListener) {
         new Thread(new Runnable() {
             @Override

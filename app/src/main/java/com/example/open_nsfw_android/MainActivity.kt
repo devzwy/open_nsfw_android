@@ -4,15 +4,16 @@ import android.annotation.SuppressLint
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
+import android.support.v7.widget.LinearLayoutManager
 import com.zwy.nsfw.api.NsfwHelper
 import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : AppCompatActivity() {
     var nsfwHelper: NsfwHelper? = null
-
-
+    var mainAdapter: MainAdapter? = null
+    var index = 0
+    val listData: ArrayList<MyNsfwBean> = ArrayList<MyNsfwBean>()
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,51 +22,24 @@ class MainActivity : AppCompatActivity() {
 //        val b = BitmapFactory.decodeStream(resources.assets.open("img/06 (1).jpg"))
 //        iv.setImageBitmap(b)
         nsfwHelper = NsfwHelper.getInstance(this, true, 1)
-
-        bt_.setOnClickListener {
-            //同步识别
+        mainAdapter = MainAdapter(null)
+        rv.layoutManager = LinearLayoutManager(this)
+        rv.adapter = mainAdapter
+        tv_start.setOnClickListener {
             for (a in resources.assets.list("img")) {
-                val b = BitmapFactory.decodeStream(resources.assets.open("img/${a}"))
-                val nsfwBean = nsfwHelper?.scanBitmapSyn(b)
-                Log.d("demo", nsfwBean.toString() + " - ${a}")
-                tvv.text = "识别成功：\n\tSFW score : ${nsfwBean?.sfw}\n\tNSFW score : ${nsfwBean?.nsfw},- ${a}"
-                if (nsfwBean?.nsfw ?: 0f > 0.7) {
-                    tvv.text = "${tvv.text} \n \t - 色情图片"
-                } else {
-                    tvv.text = "${tvv.text} \n \t - 正常图片"
+                val path = "img/${a}"
+                val b = BitmapFactory.decodeStream(resources.assets.open(path))
+                listData.add(MyNsfwBean(0f, 0f, path, b))
+                nsfwHelper?.scanBitmap(b) { sfw, nsfw ->
+                    listData[index].sfw = sfw
+                    listData[index].nsfw = nsfw
+                    mainAdapter?.addData(listData[index])
+                    mainAdapter?.notifyItemInserted(index)
+                    index++
                 }
             }
-//            val nsfwBean = nsfwHelper?.scanBitmapSyn(b)
-//            Log.d("demo", nsfwBean.toString())
-//            tvv.text = "识别成功：\n\tSFW score : ${nsfwBean?.sfw}\n\tNSFW score : ${nsfwBean?.nsfw}"
-//            if (nsfwBean?.nsfw ?: 0f > 0.7) {
-//                tvv.text = "${tvv.text} \n \t - 色情图片"
-//            } else {
-//                tvv.text = "${tvv.text} \n \t - 正常图片"
-//            }
-//            //异步识别，接口回调识别结果
-//            nsfwHelper?.scanBitmap(b) { sfw, nsfw ->
-//                Log.d("demo", "sfw:$sfw,nsfw:$nsfw")
-//            }
+
         }
+
     }
-
-//    override fun onResume() {
-//        super.onResume()
-//        if (!OpenCVLoader.initDebug()) {
-//            OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_0_0, this, mLoaderCallback);
-//        } else {
-//            mLoaderCallback.onManagerConnected(LoaderCallbackInterface.SUCCESS);
-//        }
-//    }
-
-//    internal var mLoaderCallback: LoaderCallbackInterface = object : LoaderCallbackInterface {
-//        override fun onManagerConnected(status: Int) {
-//
-//        }
-//
-//        override fun onPackageInstall(operation: Int, callback: InstallCallbackInterface) {
-//
-//        }
-//    }
 }

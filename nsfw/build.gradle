@@ -16,9 +16,9 @@ android {
                 cppFlags "-frtti -fexceptions"
             }
         }
-        ndk {
-            abiFilters 'armeabi-v7a'
-        }
+//        ndk {
+//            abiFilters 'armeabi-v7a'
+//        }
     }
 
     buildTypes {

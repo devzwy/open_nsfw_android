@@ -27,6 +27,12 @@ android {
     aaptOptions {
         noCompress "tflite"
     }
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+            assets.srcDir("main/assets")
+        }
+    }
 }
 
 dependencies {

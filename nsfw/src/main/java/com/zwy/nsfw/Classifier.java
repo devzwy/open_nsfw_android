@@ -106,7 +106,11 @@ public abstract class Classifier {
                                 * DIM_PIXEL_SIZE
                                 * getNumBytesPerChannel());
         imgData.order(ByteOrder.LITTLE_ENDIAN);
-        OpenCVLoader.initDebug();
+        if (OpenCVLoader.initDebug()){
+            Log.d(TAG, "OpenCv Initialization Success.");
+        }else {
+            Log.e(TAG, "OpenCv Initialization Error.");
+        }
         Log.d(TAG, "Tensorflow Lite Image Classifier Initialization Success.");
     }
 

@@ -5,9 +5,15 @@ import android.app.Activity;
 import android.content.res.AssetFileDescriptor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.os.SystemClock;
 import android.util.Log;
 import com.zwy.nsfw.api.NsfwBean;
+import org.opencv.android.OpenCVLoader;
+import org.opencv.android.Utils;
+import org.opencv.core.Mat;
+import org.opencv.core.Size;
+import org.opencv.imgproc.Imgproc;
 import org.tensorflow.lite.Interpreter;
 import org.tensorflow.lite.gpu.GpuDelegate;
 
@@ -35,7 +41,7 @@ public abstract class Classifier {
     /**
      * Preallocated buffers for storing image data in.
      */
-    private int[] intValues = new int[getImageSizeX() * getImageSizeY()];
+    private int[] intValues = new int[224 * 224];
 
     /**
      * Options for configuring the Interpreter.
@@ -100,6 +106,7 @@ public abstract class Classifier {
                                 * DIM_PIXEL_SIZE
                                 * getNumBytesPerChannel());
         imgData.order(ByteOrder.LITTLE_ENDIAN);
+        OpenCVLoader.initDebug();
         Log.d(TAG, "Tensorflow Lite Image Classifier Initialization Success.");
     }
 
@@ -122,32 +129,29 @@ public abstract class Classifier {
         if (imgData == null || bitmap_ == null) {
             return;
         }
-        Bitmap bitmap = Bitmap.createScaledBitmap(bitmap_, 224, 224, false);
-
         imgData.rewind();
-//        intValues= ImageUtil.bitmap2BGR(bitmap);
+        Matrix m = new Matrix();
+        m.setScale(-1, 1);//水平翻转
+        Bitmap reversePic = Bitmap.createBitmap(bitmap_, 0, 0, bitmap_.getWidth(), bitmap_.getHeight(), m, true);
         //把每个像素的颜色值转为int 存入intValues
-        bitmap.getPixels(intValues, 0, bitmap.getWidth(), 0, 0, bitmap.getWidth(), bitmap.getHeight());
-//        bitmap.copyPixelsToBuffer(imgData);
+        reversePic.getPixels(intValues, 0, 224, 16, 16, 224, 224);
         // Convert the image to floating point.
         int pixel = 0;
         long startTime = SystemClock.uptimeMillis();
-        for (int i = 0; i < getImageSizeX(); ++i) {
-            for (int j = 0; j < getImageSizeY(); ++j) {
-
-                //操作每一个像素
-                //拿出每一个像素点对应的R、G、B的int值
-                //对每一个int值减去阈值 R-123  B-104  G-117
-                //将R、G、B 利用 B、G、R顺序重新写入数组
-                //将数组传入tflite获取回传结果
+        for (int i = 16; i < 240; ++i) {
+            for (int j = 16; j < 240; ++j) {
                 final int color = intValues[pixel++];
-                int r1 = Color.red(color) - 123;
-                int g1 = Color.green(color) - 117;
-                int b1 = Color.blue(color) - 104;
+                int r1 = Color.red(color);
+                int g1 = Color.green(color);
+                int b1 = Color.blue(color);
 
-                imgData.putFloat(b1);
-                imgData.putFloat(g1);
-                imgData.putFloat(r1);
+                int rr1 = r1 - 123;
+                int gg1 = g1 - 117;
+                int bb1 = b1 - 104;
+
+                imgData.putFloat(bb1);
+                imgData.putFloat(gg1);
+                imgData.putFloat(rr1);
             }
         }
         long endTime = SystemClock.uptimeMillis();
@@ -155,7 +159,14 @@ public abstract class Classifier {
     }
 
     public NsfwBean run(Bitmap bitmap) {
-        convertBitmapToByteBuffer(bitmap);
+        Mat mat = new Mat();
+        Utils.bitmapToMat(bitmap, mat, false);
+        //线性采样
+        Mat mat1 = new Mat();
+        Imgproc.resize(mat, mat1, new Size(256, 256), 0, 0, Imgproc.INTER_CUBIC);
+        Bitmap bitmap_256 = Bitmap.createBitmap(256, 256, Bitmap.Config.RGB_565);
+        Utils.matToBitmap(mat1, bitmap_256);
+        convertBitmapToByteBuffer(bitmap_256);
         long startTime = SystemClock.uptimeMillis();
         float[][] labelProbArray = new float[1][2];
         tflite.run(imgData, labelProbArray);

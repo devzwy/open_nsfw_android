@@ -32,6 +32,19 @@
    nsfwBean?.sfw ...
    nsfwBean?.nsfw ...
 ```
-### Demo运行结果：
+
+- 项目打包时请使用如下代码确定你使用的ndk，否则会打包全部类型的库文件，导致项目异常庞大
+```
+    ndk {
+                abiFilters 'armeabi-v7a'
+            }
+```  
+### [点我下载apk(arm+x86)](https://fir.im/nsfw)  
+
+### 扫码下载  
+
+![图片](https://github.com/devzwy/open_nsfw_android/blob/master/img/2.png)  
+
+### Demo运行结果(后期手动打码防止屏蔽)：  
 
 ![图片](https://github.com/devzwy/open_nsfw_android/blob/master/img/1.png)

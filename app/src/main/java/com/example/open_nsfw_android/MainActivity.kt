@@ -76,7 +76,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun initNsfwHelper() {
-        nsfwHelper = NsfwHelper.getInstance(this, false, 1)
+        nsfwHelper = NsfwHelper.getInstance(this, true, 4)
     }
 
     private fun reScFromImgs(list: List<LocalMedia>) {
@@ -116,5 +116,14 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 index++
             }
         }
+    }
+
+    override fun onBackPressed() {
+        finish()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        nsfwHelper?.destroy()
     }
 }

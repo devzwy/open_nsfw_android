@@ -95,6 +95,25 @@ public class Classifier {
         }
         tfliteOptions.setNumThreads(numThreads);
         tflite = new Interpreter(tfliteModel, tfliteOptions);
+
+        Tensor tensor = tflite.getInputTensor(tflite.getInputIndex("input"));
+        String stringBuilder = " \n"
+                +"dataType : " +
+                tensor.dataType() +
+                "\n" +
+                "numBytes : " +
+                tensor.numBytes() +
+                "\n" +
+                "numDimensions : " +
+                tensor.numDimensions() +
+                "\n" +
+                "numElements : " +
+                tensor.numElements() +
+                "\n" +
+                "shape : " +
+                tensor.shape().length;
+        Log.d(TAG, stringBuilder);
+
         imgData =
                 ByteBuffer.allocateDirect(
                         DIM_BATCH_SIZE
@@ -185,12 +204,6 @@ public class Classifier {
         long startTime = SystemClock.uptimeMillis();
         // out
         float[][] outArray = new float[1][2];
-        Tensor aa = tflite.getInputTensor(tflite.getInputIndex("input"));
-        Log.d(TAG, "dataType : " + aa.dataType());
-        Log.d(TAG, "numBytes : " + aa.numBytes());
-        Log.d(TAG, "numDimensions : " + aa.numDimensions());
-        Log.d(TAG, "numElements : " + aa.numElements());
-        Log.d(TAG, "shape : " + aa.shape().length);
         Log.d(TAG, "lastImgData : " + imgData);
         tflite.run(imgData, outArray);
         long endTime = SystemClock.uptimeMillis();
@@ -206,12 +219,15 @@ public class Classifier {
         if (tflite != null) {
             tflite.close();
             tflite = null;
+            Log.d(TAG,"Tensorflow Lite Image Classifier close.");
         }
         if (gpuDelegate != null) {
             gpuDelegate.close();
+            Log.d(TAG,"Tensorflow Lite Image gpuDelegate close.");
             gpuDelegate = null;
         }
         tfliteModel = null;
+        Log.d(TAG,"Tensorflow Lite destroyed.");
     }
 
 }

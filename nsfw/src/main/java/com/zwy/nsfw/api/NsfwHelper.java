@@ -14,6 +14,14 @@ public class NsfwHelper {
     private Activity activity;
     private Classifier classifier;
 
+    /**
+     * Creates a classifier with the provided configuration.
+     *
+     * @param activity         The current Activity.
+     * @param isAddGpuDelegate Add gpu delegate
+     * @param numThreads       The number of threads to use for classification.
+     * @return A classifier with the desired configuration.
+     */
     public static NsfwHelper getInstance(Activity activity, Boolean isAddGpuDelegate, int numThreads) {
         synchronized (NsfwHelper.class) {
             if (nsfwHelper == null) {
@@ -74,7 +82,7 @@ public class NsfwHelper {
         nsfwHelper = null;
     }
 
-    public static interface OnScanBitmapListener {
+    public  interface OnScanBitmapListener {
         void onSuccess(float sfw, float nsfw);
     }
 

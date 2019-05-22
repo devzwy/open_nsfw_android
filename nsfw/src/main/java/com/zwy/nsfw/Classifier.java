@@ -15,6 +15,7 @@ import org.opencv.core.Mat;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 import org.tensorflow.lite.Interpreter;
+import org.tensorflow.lite.Tensor;
 import org.tensorflow.lite.gpu.GpuDelegate;
 
 import java.io.FileInputStream;
@@ -24,13 +25,22 @@ import java.nio.ByteOrder;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 
-/**
- * A classifier specialized to label images using TensorFlow Lite.
- */
-public abstract class Classifier {
+import static java.lang.Math.max;
+
+public class Classifier {
 
     public static final String TAG = "open_nsfw_android";
 
+    /**
+     * tensor input img size
+     */
+    private final int INPUT_WIDTH = 224;
+    private final int INPUT_HEIGHT = 224;
+
+    /**
+     * BytesPerChannel
+     */
+    private final int BYTES_PER_CHANNEL_NUM = 4;
     /**
      * Dimensions of inputs.
      */
@@ -41,20 +51,12 @@ public abstract class Classifier {
     /**
      * Preallocated buffers for storing image data in.
      */
-    private int[] intValues = new int[224 * 224];
-
-    /**
-     * Options for configuring the Interpreter.
-     */
-    private final Interpreter.Options tfliteOptions = new Interpreter.Options();
+    private int[] intValues = new int[INPUT_WIDTH * INPUT_HEIGHT];
 
     /**
      * The loaded TensorFlow Lite model.
      */
     private MappedByteBuffer tfliteModel;
-
-    /** Labels corresponding to the output of the vision model. */
-//  private List<String> labels;
 
     /**
      * Optional GPU delegate for accleration.
@@ -64,34 +66,29 @@ public abstract class Classifier {
     /**
      * An instance of the driver class to run model inference with Tensorflow Lite.
      */
-    protected Interpreter tflite;
+    private Interpreter tflite;
 
     /**
      * A ByteBuffer to hold image data, to be feed into Tensorflow Lite as inputs.
      */
-    protected ByteBuffer imgData = null;
+    private ByteBuffer imgData;
 
     /**
      * Creates a classifier with the provided configuration.
      *
-     * @param activity   The current Activity.
-     * @param numThreads The number of threads to use for classification.
+     * @param activity         The current Activity.
+     * @param isAddGpuDelegate Add gpu delegate
+     * @param numThreads       The number of threads to use for classification.
      * @return A classifier with the desired configuration.
      */
     public static Classifier create(Activity activity, Boolean isAddGpuDelegate, int numThreads)
             throws IOException {
-        return new ClassifierFloatMobileNet(activity, isAddGpuDelegate, numThreads);
+        return new Classifier(activity, isAddGpuDelegate, numThreads);
     }
 
-    /**
-     * An immutable result returned by a Classifier describing what was recognized.
-     */
-
-    /**
-     * Initializes a {@code Classifier}.
-     */
-    protected Classifier(Activity activity, Boolean isGPU, int numThreads) throws IOException {
+    private Classifier(Activity activity, Boolean isGPU, int numThreads) throws IOException {
         tfliteModel = loadModelFile(activity);
+        Interpreter.Options tfliteOptions = new Interpreter.Options();
         if (isGPU) {
             gpuDelegate = new GpuDelegate();
             tfliteOptions.addDelegate(gpuDelegate);
@@ -101,14 +98,15 @@ public abstract class Classifier {
         imgData =
                 ByteBuffer.allocateDirect(
                         DIM_BATCH_SIZE
-                                * getImageSizeX()
-                                * getImageSizeY()
+                                * INPUT_WIDTH
+                                * INPUT_HEIGHT
                                 * DIM_PIXEL_SIZE
-                                * getNumBytesPerChannel());
+                                * BYTES_PER_CHANNEL_NUM);
+
         imgData.order(ByteOrder.LITTLE_ENDIAN);
-        if (OpenCVLoader.initDebug()){
+        if (OpenCVLoader.initDebug()) {
             Log.d(TAG, "OpenCv Initialization Success.");
-        }else {
+        } else {
             Log.e(TAG, "OpenCv Initialization Error.");
         }
         Log.d(TAG, "Tensorflow Lite Image Classifier Initialization Success.");
@@ -118,13 +116,14 @@ public abstract class Classifier {
      * Memory-map the model file in Assets.
      */
     private MappedByteBuffer loadModelFile(Activity activity) throws IOException {
-        AssetFileDescriptor fileDescriptor = activity.getAssets().openFd(getModelPath());
+        AssetFileDescriptor fileDescriptor = activity.getAssets().openFd("nsfw.tflite");
         FileInputStream inputStream = new FileInputStream(fileDescriptor.getFileDescriptor());
         FileChannel fileChannel = inputStream.getChannel();
         long startOffset = fileDescriptor.getStartOffset();
         long declaredLength = fileDescriptor.getDeclaredLength();
         return fileChannel.map(FileChannel.MapMode.READ_ONLY, startOffset, declaredLength);
     }
+
 
     /**
      * Writes Image data into a {@code ByteBuffer}.
@@ -137,13 +136,19 @@ public abstract class Classifier {
         Matrix m = new Matrix();
         m.setScale(-1, 1);//水平翻转
         Bitmap reversePic = Bitmap.createBitmap(bitmap_, 0, 0, bitmap_.getWidth(), bitmap_.getHeight(), m, true);
+        int W = bitmap_.getWidth();
+        int H = bitmap_.getHeight();
+
+        int w_off = max((W - INPUT_WIDTH) / 2, 0);
+        int h_off = max((H - INPUT_HEIGHT) / 2, 0);
+
         //把每个像素的颜色值转为int 存入intValues
-        reversePic.getPixels(intValues, 0, 224, 16, 16, 224, 224);
+        reversePic.getPixels(intValues, 0, INPUT_WIDTH, h_off, w_off, INPUT_WIDTH, INPUT_HEIGHT);
         // Convert the image to floating point.
         int pixel = 0;
         long startTime = SystemClock.uptimeMillis();
-        for (int i = 16; i < 240; ++i) {
-            for (int j = 16; j < 240; ++j) {
+        for (int i = h_off; i < h_off + INPUT_HEIGHT; ++i) {
+            for (int j = w_off; j < w_off + INPUT_WIDTH; ++j) {
                 final int color = intValues[pixel++];
                 int r1 = Color.red(color);
                 int g1 = Color.green(color);
@@ -163,20 +168,34 @@ public abstract class Classifier {
     }
 
     public NsfwBean run(Bitmap bitmap) {
+
         Mat mat = new Mat();
-        Utils.bitmapToMat(bitmap, mat, false);
-        //线性采样
+        //add alpha
+        Utils.bitmapToMat(bitmap.copy(Bitmap.Config.ARGB_8888, false), mat, true);
+
         Mat mat1 = new Mat();
-        Imgproc.resize(mat, mat1, new Size(256, 256), 0, 0, Imgproc.INTER_CUBIC);
-        Bitmap bitmap_256 = Bitmap.createBitmap(256, 256, Bitmap.Config.RGB_565);
+        //将原bitmap双线性采样为256*256大小
+        Imgproc.resize(mat, mat1, new Size(256, 256), 0, 0, Imgproc.INTER_LINEAR);
+        //add alpha
+        Bitmap bitmap_256 = Bitmap.createBitmap(256, 256, Bitmap.Config.ARGB_8888);
+        //convert
         Utils.matToBitmap(mat1, bitmap_256);
+        //Writes image data into byteBuffer
         convertBitmapToByteBuffer(bitmap_256);
         long startTime = SystemClock.uptimeMillis();
-        float[][] labelProbArray = new float[1][2];
-        tflite.run(imgData, labelProbArray);
+        // out
+        float[][] outArray = new float[1][2];
+        Tensor aa = tflite.getInputTensor(tflite.getInputIndex("input"));
+        Log.d(TAG, "dataType : " + aa.dataType());
+        Log.d(TAG, "numBytes : " + aa.numBytes());
+        Log.d(TAG, "numDimensions : " + aa.numDimensions());
+        Log.d(TAG, "numElements : " + aa.numElements());
+        Log.d(TAG, "shape : " + aa.shape().length);
+        Log.d(TAG, "lastImgData : " + imgData);
+        tflite.run(imgData, outArray);
         long endTime = SystemClock.uptimeMillis();
         Log.d(TAG, "Timecost to run model inference: " + (endTime - startTime) + "ms");
-        return new NsfwBean(labelProbArray[0][0], labelProbArray[0][1]);
+        return new NsfwBean(outArray[0][0], outArray[0][1]);
     }
 
 
@@ -194,34 +213,5 @@ public abstract class Classifier {
         }
         tfliteModel = null;
     }
-
-    /**
-     * Get the image size along the x axis.
-     *
-     * @return
-     */
-    public abstract int getImageSizeX();
-
-    /**
-     * Get the image size along the y axis.
-     *
-     * @return
-     */
-    public abstract int getImageSizeY();
-
-    /**
-     * Get the name of the model file stored in Assets.
-     *
-     * @return
-     */
-    protected abstract String getModelPath();
-
-
-    /**
-     * Get the number of bytes that is used to store a single color channel value.
-     *
-     * @return
-     */
-    protected abstract int getNumBytesPerChannel();
 
 }

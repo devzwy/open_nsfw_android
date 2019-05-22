@@ -3,9 +3,8 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="semi_transparent">#66000000</color>
-    <color name="nsfw1">#20EE1E0D</color>
+    <color name="nsfw1">#56FF0000</color>
     <color name="nsfw2">#20FD9904</color>
     <color name="nsfw3">#FFFFFF</color>
     <color name="colorAccent">#D81B60</color>
-
 </resources>

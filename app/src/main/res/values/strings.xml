@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">离线鉴黄</string>
+    <string name="str_bt1">识别Assets下图片</string>
 </resources>

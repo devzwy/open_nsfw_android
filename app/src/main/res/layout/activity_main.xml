@@ -4,13 +4,26 @@
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
-    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-              android:textSize="18sp"
-              android:id="@+id/tv_start"
-              android:gravity="center"
-              android:layout_gravity="center"
-              android:padding="20dp"
-              android:text="点击开始识别Assets下的测试图片"/>
+    <LinearLayout android:layout_width="match_parent"
+                  android:orientation="horizontal"
+                  android:layout_height="wrap_content">
+        <Button android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="16sp"
+                android:id="@+id/bt_sc_assets"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:padding="20dp"
+                android:text="@string/str_bt1"/>
+        <Button android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="16sp"
+                android:id="@+id/bt_sc_from_other"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:padding="20dp"
+                android:text="从相册选取"/>
+    </LinearLayout>
     <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
               android:text="sfw:适宜在公共场所浏览，nsfw:不适宜在公共场所浏览，两者都是0-1中间的浮点型值，nsfw数值越大表示色情程度越高，sfw反之"
               android:padding="15dp"
@@ -19,31 +32,4 @@
             android:id="@+id/rv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
-    <!--<ScrollView android:layout_width="match_parent" android:layout_height="match_parent">-->
-    <!--<LinearLayout android:layout_width="match_parent"-->
-    <!--android:orientation="vertical" android:layout_height="match_parent">-->
-    <!--<Button android:layout_width="wrap_content"-->
-    <!--android:layout_centerHorizontal="true"-->
-    <!--android:text="点击开始识别Assets下的测试图片"-->
-    <!--android:layout_gravity="center"-->
-    <!--android:id="@+id/bt_"-->
-    <!--android:gravity="center"-->
-    <!--android:layout_height="wrap_content"/>-->
-    <!--<TextView android:layout_width="wrap_content" android:layout_height="wrap_content"-->
-    <!--android:layout_below="@+id/bt_"-->
-    <!--android:id="@+id/tv_"-->
-    <!--android:padding="20dp"-->
-    <!--android:text="sfw:适宜在公共场所浏览，nsfw:不适宜在公共场所浏览，两者都是0-1中间的浮点型值，nsfw数值越大表示色情程度越高，sfw反之"/>-->
-    <!--<TextView-->
-    <!--android:id="@+id/tvv"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:padding="20dp"-->
-    <!--android:textColor="@color/colorAccent"-->
-    <!--android:textSize="16sp"-->
-    <!--android:layout_height="match_parent"/>-->
-
-    <!--</LinearLayout>-->
-    <!--</ScrollView>-->
-
-
 </LinearLayout>

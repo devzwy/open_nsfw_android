@@ -24,6 +24,20 @@
 	}
 
 ```
+- 扫描时报如下错误
+```
+java.lang.NullPointerException: Attempt to invoke virtual method 'com.zwy.nsfw.api.NsfwBean com.zwy.nsfw.Classifier.run(android.graphics.Bitmap)' on a null object reference
+```
+__请添加__
+```
+  android {
+        ...
+        aaptOptions {
+            noCompress "tflite"
+        }
+  }
+```  
+
 
 - Code like this
 

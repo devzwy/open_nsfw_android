@@ -42,6 +42,6 @@ dependencies {
 
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.30'
     implementation 'com.github.LuckSiege.PictureSelector:picture_library:v2.2.3'
-//    implementation project(path: ':nsfw')
-    implementation 'com.github.devzwy:open_nsfw_android:1.2.5'
+    implementation project(path: ':nsfw')
+//    implementation 'com.github.devzwy:open_nsfw_android:1.2.5'
 }

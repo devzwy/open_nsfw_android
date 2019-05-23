@@ -1,6 +1,8 @@
 package com.example.open_nsfw_android
 
+import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -22,12 +24,14 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     var listData: ArrayList<MyNsfwBean> = ArrayList<MyNsfwBean>()
     var selectList: List<LocalMedia>? = null
 
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         initNsfwHelper()
         initAdapter()
         initClickListener()
+        tv_version.text = "当前版本：${this.packageManager.getPackageInfo(packageName, 0).versionName}"
     }
 
     override fun onClick(v: View) {

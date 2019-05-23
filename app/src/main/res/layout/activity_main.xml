@@ -24,6 +24,14 @@
                 android:padding="20dp"
                 android:text="从相册选取"/>
     </LinearLayout>
+    <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+              android:gravity="center"
+              android:id="@+id/tv_version"
+              android:textSize="15sp"
+              android:textColor="@color/blue"
+              android:padding="5dp"
+              android:text="版本号："/>
+
     <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
               android:text="sfw:适宜在公共场所浏览，nsfw:不适宜在公共场所浏览，两者都是0-1中间的浮点型值，nsfw数值越大表示色情程度越高，sfw反之"
               android:padding="15dp"

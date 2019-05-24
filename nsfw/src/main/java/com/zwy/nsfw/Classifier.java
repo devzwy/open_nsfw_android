@@ -152,8 +152,7 @@ public class Classifier {
         bitmap_.getPixels(intValues, 0, INPUT_WIDTH, h_off, w_off, INPUT_WIDTH, INPUT_HEIGHT);
         // Convert the image to floating point.
         long startTime = SystemClock.uptimeMillis();
-        for (int i = 0; i < intValues.length; i++) {
-            final int color = intValues[i];
+        for (final int color : intValues) {
             int r1 = Color.red(color);
             int g1 = Color.green(color);
             int b1 = Color.blue(color);

@@ -1,10 +1,13 @@
 package com.example.open_nsfw_android
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.support.v4.app.ActivityCompat
+import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
@@ -32,6 +35,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         initAdapter()
         initClickListener()
         tv_version.text = "当前版本：${this.packageManager.getPackageInfo(packageName, 0).versionName}"
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){ //表示未授权时
+            //进行授权
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),1);
+        }
     }
 
     override fun onClick(v: View) {

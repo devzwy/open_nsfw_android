@@ -3,27 +3,22 @@ package com.zwy.nsfw;
 
 import android.app.Activity;
 import android.content.res.AssetFileDescriptor;
-import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.graphics.Matrix;
+import android.graphics.*;
+import android.os.Environment;
 import android.os.SystemClock;
 import android.util.Log;
 import com.zwy.nsfw.api.NsfwBean;
-import org.opencv.android.OpenCVLoader;
-import org.opencv.android.Utils;
-import org.opencv.core.Mat;
-import org.opencv.core.Size;
-import org.opencv.imgproc.Imgproc;
 import org.tensorflow.lite.Interpreter;
 import org.tensorflow.lite.Tensor;
 import org.tensorflow.lite.gpu.GpuDelegate;
 
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.*;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
+import java.util.ArrayList;
+import java.util.List;
 
 import static java.lang.Math.max;
 
@@ -52,7 +47,7 @@ public class Classifier {
      * Preallocated buffers for storing image data in.
      */
     private int[] intValues = new int[INPUT_WIDTH * INPUT_HEIGHT];
-
+    List<Integer> list = new ArrayList<>();
     /**
      * The loaded TensorFlow Lite model.
      */
@@ -98,7 +93,7 @@ public class Classifier {
 
         Tensor tensor = tflite.getInputTensor(tflite.getInputIndex("input"));
         String stringBuilder = " \n"
-                +"dataType : " +
+                + "dataType : " +
                 tensor.dataType() +
                 "\n" +
                 "numBytes : " +
@@ -123,11 +118,6 @@ public class Classifier {
                                 * BYTES_PER_CHANNEL_NUM);
 
         imgData.order(ByteOrder.LITTLE_ENDIAN);
-        if (OpenCVLoader.initDebug()) {
-            Log.d(TAG, "OpenCv Initialization Success.");
-        } else {
-            Log.e(TAG, "OpenCv Initialization Error.");
-        }
         Log.d(TAG, "Tensorflow Lite Image Classifier Initialization Success.");
     }
 
@@ -152,9 +142,6 @@ public class Classifier {
             return;
         }
         imgData.rewind();
-        Matrix m = new Matrix();
-        m.setScale(-1, 1);//水平翻转
-        Bitmap reversePic = Bitmap.createBitmap(bitmap_, 0, 0, bitmap_.getWidth(), bitmap_.getHeight(), m, true);
         int W = bitmap_.getWidth();
         int H = bitmap_.getHeight();
 
@@ -162,25 +149,22 @@ public class Classifier {
         int h_off = max((H - INPUT_HEIGHT) / 2, 0);
 
         //把每个像素的颜色值转为int 存入intValues
-        reversePic.getPixels(intValues, 0, INPUT_WIDTH, h_off, w_off, INPUT_WIDTH, INPUT_HEIGHT);
+        bitmap_.getPixels(intValues, 0, INPUT_WIDTH, h_off, w_off, INPUT_WIDTH, INPUT_HEIGHT);
         // Convert the image to floating point.
-        int pixel = 0;
         long startTime = SystemClock.uptimeMillis();
-        for (int i = h_off; i < h_off + INPUT_HEIGHT; ++i) {
-            for (int j = w_off; j < w_off + INPUT_WIDTH; ++j) {
-                final int color = intValues[pixel++];
-                int r1 = Color.red(color);
-                int g1 = Color.green(color);
-                int b1 = Color.blue(color);
+        for (int i = 0; i < intValues.length; i++) {
+            final int color = intValues[i];
+            int r1 = Color.red(color);
+            int g1 = Color.green(color);
+            int b1 = Color.blue(color);
 
-                int rr1 = r1 - 123;
-                int gg1 = g1 - 117;
-                int bb1 = b1 - 104;
+            int rr1 = r1 - 123;
+            int gg1 = g1 - 117;
+            int bb1 = b1 - 104;
 
-                imgData.putFloat(bb1);
-                imgData.putFloat(gg1);
-                imgData.putFloat(rr1);
-            }
+            imgData.putFloat(bb1);
+            imgData.putFloat(gg1);
+            imgData.putFloat(rr1);
         }
         long endTime = SystemClock.uptimeMillis();
         Log.d(TAG, "Timecost to put values into ByteBuffer: " + (endTime - startTime) + "ms");
@@ -188,27 +172,65 @@ public class Classifier {
 
     public NsfwBean run(Bitmap bitmap) {
 
-        Mat mat = new Mat();
-        //add alpha
-        Utils.bitmapToMat(bitmap.copy(Bitmap.Config.ARGB_8888, false), mat, true);
+        Bitmap bitmap_256 = getResizedBitmap(bitmap, 256, 256);
 
-        Mat mat1 = new Mat();
-        //将原bitmap双线性采样为256*256大小
-        Imgproc.resize(mat, mat1, new Size(256, 256), 0, 0, Imgproc.INTER_LINEAR);
-        //add alpha
-        Bitmap bitmap_256 = Bitmap.createBitmap(256, 256, Bitmap.Config.ARGB_8888);
-        //convert
-        Utils.matToBitmap(mat1, bitmap_256);
+        saveBitmapFile(bitmap_256);
+
         //Writes image data into byteBuffer
         convertBitmapToByteBuffer(bitmap_256);
+
         long startTime = SystemClock.uptimeMillis();
         // out
         float[][] outArray = new float[1][2];
-        Log.d(TAG, "lastImgData : " + imgData);
+
         tflite.run(imgData, outArray);
+
         long endTime = SystemClock.uptimeMillis();
+
+        Log.d(TAG, "SFW score :" + outArray[0][0] + ",NSFW score :" + outArray[0][1]);
         Log.d(TAG, "Timecost to run model inference: " + (endTime - startTime) + "ms");
         return new NsfwBean(outArray[0][0], outArray[0][1]);
+    }
+
+    public static Bitmap getResizedBitmap(Bitmap bitmap, float newWidth, float newHeight) {
+//        if (bitmap.getHeight()>bitmap.getWidth()){
+//            newHeight=300f;
+//            newWidth= (int) (bitmap.getWidth()*(newHeight/(float) bitmap.getHeight()));
+//        }else{
+//            newWidth=300f;
+//            newHeight= (int) (bitmap.getHeight()*(newWidth/(float) bitmap.getWidth()));
+//        }
+
+        Bitmap resizedBitmap = Bitmap.createBitmap((int) newWidth, (int) newHeight, Bitmap.Config.ARGB_8888);
+
+
+        float scaleX = newWidth / (float) bitmap.getWidth();
+        float scaleY = newHeight / (float) bitmap.getHeight();
+        float pivotX = 0;
+        float pivotY = 0;
+
+        Matrix scaleMatrix = new Matrix();
+        scaleMatrix.setScale(scaleX, scaleY, pivotX, pivotY);
+        Canvas canvas = new Canvas(resizedBitmap);
+        canvas.setMatrix(scaleMatrix);
+        canvas.drawBitmap(bitmap, 0, 0, new Paint(Paint.FILTER_BITMAP_FLAG |
+                Paint.DITHER_FLAG |
+                Paint.ANTI_ALIAS_FLAG));
+
+        return resizedBitmap;
+    }
+
+    public void saveBitmapFile(Bitmap bitmap) {
+        String fp = Environment.getExternalStorageDirectory().getAbsolutePath() + "/333333333.bmp";
+        File file = new File(fp);//将要保存图片的路径
+        try {
+            BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos);
+            bos.flush();
+            bos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -219,15 +241,15 @@ public class Classifier {
         if (tflite != null) {
             tflite.close();
             tflite = null;
-            Log.d(TAG,"Tensorflow Lite Image Classifier close.");
+            Log.d(TAG, "Tensorflow Lite Image Classifier close.");
         }
         if (gpuDelegate != null) {
             gpuDelegate.close();
-            Log.d(TAG,"Tensorflow Lite Image gpuDelegate close.");
+            Log.d(TAG, "Tensorflow Lite Image gpuDelegate close.");
             gpuDelegate = null;
         }
         tfliteModel = null;
-        Log.d(TAG,"Tensorflow Lite destroyed.");
+        Log.d(TAG, "Tensorflow Lite destroyed.");
     }
 
 }

@@ -1,1 +1,1 @@
-include ':app', ':nsfw', ':openCVLibrary340'
+include ':app', ':nsfw'

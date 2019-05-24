@@ -47,22 +47,22 @@ __请添加__
    nsfwBean?.nsfw ...
 ```
 
-- 项目打包时请使用如下代码确定你使用的ndk，否则会打包全部类型的库文件，导致项目异常庞大
-```
-    ndk {
-                abiFilters 'armeabi-v7a'
-            }
-```
-### [点我下载apk(arm+x86)](https://fir.im/nsfw)
+### [点我下载apk](https://fir.im/nsfw)
 
 ### 扫码下载
 
 ![图片](https://github.com/devzwy/open_nsfw_android/blob/master/img/2.png)
 
-## 提示：下面的图片不要在公共场所打开！！！
-## 提示：下面的图片不要在公共场所打开！！！
+### Demo运行结果：
 ## 提示：下面的图片不要在公共场所打开！！！
 
-### Demo运行结果(后期手动打码防止屏蔽)：
+## 提示：下面的图片不要在公共场所打开！！！
+
+## 提示：下面的图片不要在公共场所打开！！！
+
+## 提示：下面的图片不要在公共场所打开！！！
+
+## 提示：下面的图片不要在公共场所打开！！！
+
 
 ![图片](https://github.com/devzwy/open_nsfw_android/blob/master/img/1.png)

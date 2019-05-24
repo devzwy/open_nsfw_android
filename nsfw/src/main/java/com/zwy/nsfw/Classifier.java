@@ -172,9 +172,7 @@ public class Classifier {
 
     public NsfwBean run(Bitmap bitmap) {
 
-        Bitmap bitmap_256 = getResizedBitmap(bitmap, 256, 256);
-
-        saveBitmapFile(bitmap_256);
+        Bitmap bitmap_256 = Bitmap.createScaledBitmap(bitmap, 256, 256,true);
 
         //Writes image data into byteBuffer
         convertBitmapToByteBuffer(bitmap_256);
@@ -191,48 +189,6 @@ public class Classifier {
         Log.d(TAG, "Timecost to run model inference: " + (endTime - startTime) + "ms");
         return new NsfwBean(outArray[0][0], outArray[0][1]);
     }
-
-    public static Bitmap getResizedBitmap(Bitmap bitmap, float newWidth, float newHeight) {
-//        if (bitmap.getHeight()>bitmap.getWidth()){
-//            newHeight=300f;
-//            newWidth= (int) (bitmap.getWidth()*(newHeight/(float) bitmap.getHeight()));
-//        }else{
-//            newWidth=300f;
-//            newHeight= (int) (bitmap.getHeight()*(newWidth/(float) bitmap.getWidth()));
-//        }
-
-        Bitmap resizedBitmap = Bitmap.createBitmap((int) newWidth, (int) newHeight, Bitmap.Config.ARGB_8888);
-
-
-        float scaleX = newWidth / (float) bitmap.getWidth();
-        float scaleY = newHeight / (float) bitmap.getHeight();
-        float pivotX = 0;
-        float pivotY = 0;
-
-        Matrix scaleMatrix = new Matrix();
-        scaleMatrix.setScale(scaleX, scaleY, pivotX, pivotY);
-        Canvas canvas = new Canvas(resizedBitmap);
-        canvas.setMatrix(scaleMatrix);
-        canvas.drawBitmap(bitmap, 0, 0, new Paint(Paint.FILTER_BITMAP_FLAG |
-                Paint.DITHER_FLAG |
-                Paint.ANTI_ALIAS_FLAG));
-
-        return resizedBitmap;
-    }
-
-    public void saveBitmapFile(Bitmap bitmap) {
-        String fp = Environment.getExternalStorageDirectory().getAbsolutePath() + "/333333333.bmp";
-        File file = new File(fp);//将要保存图片的路径
-        try {
-            BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos);
-            bos.flush();
-            bos.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
 
     /**
      * Closes the interpreter and model to release resources.

@@ -10,8 +10,8 @@ android {
         applicationId "com.example.open_nsfw_android"
         minSdkVersion 15
         targetSdkVersion 28
-        versionCode 3
-        versionName "1.2.6"
+        versionCode 4
+        versionName "1.2.7"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -39,5 +39,5 @@ dependencies {
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.30'
     implementation 'com.github.LuckSiege.PictureSelector:picture_library:v2.2.3'
 //    implementation project(path: ':nsfw')
-    implementation 'com.github.devzwy:open_nsfw_android:1.2.6'
+    implementation 'com.github.devzwy:open_nsfw_android:1.2.7'
 }

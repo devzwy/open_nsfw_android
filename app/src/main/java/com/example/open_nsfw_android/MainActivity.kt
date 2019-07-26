@@ -2,6 +2,7 @@ package com.example.open_nsfw_android
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.ProgressDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
@@ -15,18 +16,21 @@ import com.luck.picture.lib.PictureSelector
 import com.luck.picture.lib.config.PictureConfig
 import com.luck.picture.lib.config.PictureMimeType
 import com.luck.picture.lib.entity.LocalMedia
-import com.zwy.nsfw.api.NsfwHelper
+import com.zwy.nsfw.api.NSFWHelper
+import com.zwy.nsfw.core.NSFWConfig
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlin.concurrent.thread
 
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
-    var nsfwHelper: NsfwHelper? = null
+    var nsfwHelper: NSFWHelper? = null
     var mainAdapter: MainAdapter? = null
     var index = 0
-    var listData: ArrayList<MyNsfwBean> = ArrayList<MyNsfwBean>()
+    var listData: ArrayList<MyNsfwBean> = ArrayList()
     var selectList: List<LocalMedia>? = null
 
+    var progressDialog: ProgressDialog? = null
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,10 +39,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         initAdapter()
         initClickListener()
         tv_version.text = "当前版本：${this.packageManager.getPackageInfo(packageName, 0).versionName}"
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){ //表示未授权时
+        if (ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+            ) != PackageManager.PERMISSION_GRANTED
+        ) { //表示未授权时
             //进行授权
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),1);
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 1);
         }
     }
 
@@ -88,10 +95,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun initNsfwHelper() {
-        nsfwHelper = NsfwHelper.getInstance(this, true, 4)
+        nsfwHelper = NSFWHelper.init(NSFWConfig(assets))
     }
 
     private fun reScFromImgs(list: List<LocalMedia>) {
+        progressDialog = ProgressDialog.show(this, "提示", "请稍后")
         index = 0
         mainAdapter?.setNewData(null)
         listData = ArrayList<MyNsfwBean>()
@@ -99,35 +107,44 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             for (lm in list) {
                 val bitmap = BitmapFactory.decodeFile(lm.path)
                 listData.add(MyNsfwBean(0.0f, 0.0f, lm.path, bitmap))
-                nsfwHelper?.scanBitmap(bitmap) { sfw, nsfw ->
-                    listData[index].sfw = sfw
-                    listData[index].nsfw = nsfw
-                    mainAdapter?.addData(listData[index])
-                    mainAdapter?.notifyItemInserted(index)
-                    rv.scrollToPosition(index)
-                    index++
-                }
+                val nsfwBean = nsfwHelper?.scanBitmap(bitmap)!!
+                listData[index].sfw = nsfwBean.sfw
+                listData[index].nsfw = nsfwBean.nsfw
+//                rv.scrollToPosition(index)
+                index++
+            }
+            runOnUiThread {
+                mainAdapter?.setNewData(listData)
+                mainAdapter?.notifyDataSetChanged()
+                progressDialog?.dismiss()
             }
         }).start()
     }
 
     private fun reScAssetsImgs() {
+        progressDialog = ProgressDialog.show(this, "提示", "请稍后")
         index = 0
         mainAdapter?.setNewData(null)
         listData = ArrayList<MyNsfwBean>()
-        for (a in resources.assets.list("img")) {
-            val path = "img/${a}"
-            val b = BitmapFactory.decodeStream(resources.assets.open(path))
-            listData.add(MyNsfwBean(0f, 0f, path, b))
-            nsfwHelper?.scanBitmap(b) { sfw, nsfw ->
-                listData[index].sfw = sfw
-                listData[index].nsfw = nsfw
-                mainAdapter?.addData(listData[index])
-                mainAdapter?.notifyItemInserted(index)
-                rv.scrollToPosition(index)
+        thread(true) {
+            for (a in resources.assets.list("img")) {
+                val path = "img/${a}"
+                val b = BitmapFactory.decodeStream(resources.assets.open(path))
+                listData.add(MyNsfwBean(0f, 0f, path, b))
+                val nsfwBean = nsfwHelper?.scanBitmap(b)!!
+                listData[index].sfw = nsfwBean.sfw
+                listData[index].nsfw = nsfwBean.nsfw
+
                 index++
             }
+            runOnUiThread {
+                mainAdapter?.setNewData(listData)
+                mainAdapter?.notifyDataSetChanged()
+                progressDialog?.dismiss()
+//                rv.scrollToPosition(index)
+            }
         }
+
     }
 
     override fun onBackPressed() {
@@ -136,6 +153,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onDestroy() {
         super.onDestroy()
-        nsfwHelper?.destroy()
+        nsfwHelper?.destroyFactory()
     }
 }

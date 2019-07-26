@@ -42,9 +42,13 @@ __请添加__
 - Code like this
 
 ```
-   val nsfwBean = NsfwHelper.getInstance(this, true, 1).scanBitmapSyn(bitmap)
-   nsfwBean?.sfw ...
-   nsfwBean?.nsfw ...
+  val nsfwHelper = NSFWHelper.init(NSFWConfig(assets))
+  val nsfwBean = nsfwHelper?.scanBitmap(bitmap)!!
+  nsfwBean.sfw
+  nsfwBean.nsfw
+  if(nsfwBean.nsfw>0.3){
+    Log.e("NSFW","图片涉黄")
+  }
 ```
 
 ### [点我下载apk](https://fir.im/nsfw)

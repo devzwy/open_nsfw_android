@@ -8,7 +8,7 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.example.open_nsfw_android"
-        minSdkVersion 15
+        minSdkVersion 19
         targetSdkVersion 28
         versionCode 5
         versionName "1.2.8"
@@ -23,6 +23,12 @@ android {
     aaptOptions {
         noCompress "tflite"
     }
+
+    //添加
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
@@ -36,8 +42,8 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
 
-    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.30'
-    implementation 'com.github.LuckSiege.PictureSelector:picture_library:v2.2.3'
+    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.50'
+    implementation 'com.github.LuckSiege.PictureSelector:picture_library:2.2.5'
     implementation project(path: ':nsfw')
 //    implementation 'com.github.devzwy:open_nsfw_android:1.2.7'
 }

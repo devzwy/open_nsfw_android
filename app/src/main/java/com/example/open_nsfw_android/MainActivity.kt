@@ -18,7 +18,9 @@ import com.luck.picture.lib.config.PictureMimeType
 import com.luck.picture.lib.entity.LocalMedia
 import com.zwy.nsfw.api.NSFWHelper
 import com.zwy.nsfw.core.NSFWConfig
+import com.zwy.nsfw.kotlin.getNsfwScore
 import kotlinx.android.synthetic.main.activity_main.*
+import java.io.File
 import kotlin.concurrent.thread
 
 
@@ -106,12 +108,18 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         Thread(Runnable {
             for (lm in list) {
                 val bitmap = BitmapFactory.decodeFile(lm.path)
-                listData.add(MyNsfwBean(0.0f, 0.0f, lm.path, bitmap))
-                val nsfwBean = nsfwHelper?.scanBitmap(bitmap)!!
-                listData[index].sfw = nsfwBean.sfw
-                listData[index].nsfw = nsfwBean.nsfw
+
+                val nsfwScore = bitmap.getNsfwScore(assets)
+
+//                listData.add(MyNsfwBean(0.0f, 0.0f, lm.path, bitmap))
+                listData.add(MyNsfwBean(nsfwScore.sfw, nsfwScore.nsfw, lm.path, bitmap))
+//                val nsfwBean = nsfwHelper?.scanBitmap(bitmap)!!
+//                listData[index].sfw = nsfwBean.sfw
+//                listData[index].nsfw = nsfwBean.nsfw
 //                rv.scrollToPosition(index)
                 index++
+
+
             }
             runOnUiThread {
                 mainAdapter?.setNewData(listData)

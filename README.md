@@ -40,7 +40,7 @@ __请添加__
 ```  
 
 
-- Code like this
+- 使用
 
 ```
   val nsfwHelper = NSFWHelper.init(NSFWConfig(assets))
@@ -50,6 +50,32 @@ __请添加__
   if(nsfwBean.nsfw>0.3){
     Log.e("NSFW","图片涉黄")
   }
+```
+- kotlin可直接使用File.getNsfwScore(mAssetManager: AssetManager): NsfwBean 或 Bitmap.getNsfwScore(mAssetManager: AssetManager): NsfwBean 直接获取鉴定结果（NSFWHelper 1.2.9版本开始支持），比如：
+
+```  
+  val bitmap = BitmapFactory.decodeFile(path)
+  
+  val nsfwScore = bitmap.getNsfwScore(assets)
+  
+  if(nsfwBean.nsfw>0.3){
+  
+      Log.e("NSFW","图片涉黄")
+      
+  }
+```
+或
+```
+      val file = File(lm.path)
+      
+      val nsfwScore = file.getNsfwScore(assets)
+      
+      if(nsfwBean.nsfw>0.3){
+      
+          Log.e("NSFW","图片涉黄")
+          
+      }
+      
 ```
 
 ### [点我下载apk](https://fir.im/nsfw)

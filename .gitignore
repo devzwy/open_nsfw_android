@@ -11,3 +11,6 @@
 /build
 /captures
 .externalNativeBuild
+/images/TestImagesForNSFW.rtf
+/img/*
+/app/src/main/assets/img/*

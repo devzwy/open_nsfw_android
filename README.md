@@ -9,6 +9,7 @@
 ### C++参考:[TensorflowLite-Api](https://tensorflow.google.cn/lite/api_docs/cc)
 ### JavaScript参考[JS相关文档](https://js.tensorflow.org/api/latest/)
 >>> 其中Python、C++均有两种数据喂入的方式，可根据需求选择pb模型或tfLite文件，详细请参考上面的链接.Java的目前只能加载pb模型。其他的平台可自行[百度](https://www.baidu.com)
+### [pb模型下载](https://github.com/devzwy/NSFW-Python/tree/master/model)
 ### 本项目移除测试图片，请下载Demo后自行配图测试 
 
 ### 使用

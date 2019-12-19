@@ -4,6 +4,11 @@
 
 ### 色情图片离线识别，基于TensorFlow实现。识别只需200ms,可断网测试，成功率99%，调用只要一行代码，从雅虎的开源项目open_nsfw移植，tflite（6M）为训练好的模型（已量化），该模型文件可用于iOS、java、C++等平台，Python使用生成的tfLite文件检测图片的速度远远快于使用原模型. 
 ### iOS请参考：[issues13](https://github.com/devzwy/open_nsfw_android/issues/13)
+### Python参考：[NSFW-Python](https://github.com/devzwy/NSFW-Python)、[Python-TensorflowLite-Api](https://tensorflow.google.cn/api_docs/python/tf/lite)、[Python-Tensorflow-Api](https://tensorflow.google.cn/api_docs/python/tf)
+### Java参考:[Tensorflow-Api](https://tensorflow.google.cn/api_docs/java/reference/org/tensorflow/package-summary)
+### C++参考:[TensorflowLite-Api](https://tensorflow.google.cn/lite/api_docs/cc)
+### JavaScript参考[JS相关文档](https://js.tensorflow.org/api/latest/)
+>>> 其中Python、C++均有两种数据喂入的方式，可根据需求选择pb模型或tfLite文件，详细请参考上面的链接.Java的目前只能加载pb模型。其他的平台可自行[百度](https://www.baidu.com)
 ### 本项目移除测试图片，请下载Demo后自行配图测试 
 
 ### 使用

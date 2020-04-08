@@ -11,7 +11,10 @@ import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.view.View
+import android.widget.Toast
+import com.bumptech.glide.Glide
 import com.luck.picture.lib.PictureSelector
 import com.luck.picture.lib.config.PictureConfig
 import com.luck.picture.lib.config.PictureMimeType
@@ -49,6 +52,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             //进行授权
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 1);
         }
+
     }
 
     override fun onClick(v: View) {
@@ -71,6 +75,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                     .previewEggs(true)// 预览图片时 是否增强左右滑动图片体验(图片滑动一半即可看到上一张是否选中) true or false
                     .forResult(0x01);//结果回调onActivityResult code
             }
+            R.id.bt_sc_from_internet ->{
+                startActivity(Intent(this,Main2Activity::class.java))
+            }
         }
     }
 
@@ -88,6 +95,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private fun initClickListener() {
         bt_sc_assets.setOnClickListener(this)
         bt_sc_from_other.setOnClickListener(this)
+        bt_sc_from_internet.setOnClickListener(this)
     }
 
     private fun initAdapter() {

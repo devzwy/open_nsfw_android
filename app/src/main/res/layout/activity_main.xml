@@ -13,23 +13,33 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textSize="16sp"
+                android:textSize="12sp"
                 android:id="@+id/bt_sc_assets"
                 android:gravity="center"
                 android:layout_gravity="center"
-                android:padding="20dp"
+                android:padding="15dp"
                 android:text="@string/str_bt1" />
 
         <Button
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:id="@+id/bt_sc_from_other"
                 android:gravity="center"
                 android:layout_gravity="center"
-                android:padding="20dp"
+                android:padding="15dp"
                 android:text="从相册选取" />
+        <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="14sp"
+                android:id="@+id/bt_sc_from_internet"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:padding="15dp"
+                android:text="识别网络图片" />
     </LinearLayout>
 
     <TextView

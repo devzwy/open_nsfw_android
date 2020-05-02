@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
 
     <LinearLayout
             android:layout_width="match_parent"
@@ -18,7 +18,7 @@
                 android:gravity="center"
                 android:layout_gravity="center"
                 android:padding="15dp"
-                android:text="@string/str_bt1" />
+                android:text="@string/str_bt1"/>
 
         <Button
                 android:layout_width="0dp"
@@ -29,7 +29,8 @@
                 android:gravity="center"
                 android:layout_gravity="center"
                 android:padding="15dp"
-                android:text="从相册选取" />
+                android:text="从相册选取"/>
+
         <Button
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -39,7 +40,7 @@
                 android:gravity="center"
                 android:layout_gravity="center"
                 android:padding="15dp"
-                android:text="识别网络图片" />
+                android:text="识别网络图片"/>
     </LinearLayout>
 
     <TextView
@@ -50,14 +51,14 @@
             android:textSize="15sp"
             android:textColor="@color/blue"
             android:padding="5dp"
-            android:text="版本号：" />
+            android:text="版本号："/>
 
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="sfw:适宜在公共场所浏览，nsfw:不适宜在公共场所浏览，两者都是0-1中间的浮点型值，nsfw数值越大表示色情程度越高，sfw反之"
             android:padding="15dp"
-            android:textSize="14sp" />
+            android:textSize="14sp"/>
 
     <TextView
             android:layout_width="wrap_content"
@@ -65,10 +66,10 @@
             android:text="所有图片均来源百度，如有侵权请联系我删除。大尺度图片请自行google来测试"
             android:textColor="#FF0404"
             android:padding="15dp"
-            android:textSize="12sp" />
+            android:textSize="12sp"/>
 
     <android.support.v7.widget.RecyclerView
             android:id="@+id/rv"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"/>
 </LinearLayout>

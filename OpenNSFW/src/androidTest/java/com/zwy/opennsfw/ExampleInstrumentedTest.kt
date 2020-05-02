@@ -1,4 +1,4 @@
-package com.example.open_nsfw_android
+package com.zwy.opennsfw
 
 import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4
@@ -16,7 +16,7 @@ class ExampleInstrumentedTest {
     @Test
     fun useAppContext() {
         // Context of the app under test.
-        val appContext = InstrumentationRegistry.getTargetContext()
-        assertEquals("com.example.open_nsfw_android", appContext.packageName)
+        val appContext = InstrumentationRegistry.getInstrumentation().targetContext
+        assertEquals("com.zwy.opennsfw.test", appContext.packageName)
     }
 }

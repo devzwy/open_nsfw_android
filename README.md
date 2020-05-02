@@ -74,8 +74,8 @@ __请添加__
 
 ### 扫码下载
 
-![图片](https://github.com/devzwy/open_nsfw_android/blob/master/img/2.png)
+![图片](https://github.com/devzwy/open_nsfw_android/blob/dev/img/2.png)
 
 ### Demo运行结果：  
 
-![图片](https://github.com/devzwy/open_nsfw_android/blob/master/img/1.png)
+![图片](https://github.com/devzwy/open_nsfw_android/blob/dev/img/1.png)

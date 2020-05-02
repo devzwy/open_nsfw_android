@@ -47,51 +47,35 @@ __请添加__
 ```  
 
 
-- 使用
+- 使用(请使用最新版本1.3.0)
+- 建议在Application中全局初始化
 
 ```
-  val nsfwHelper = NSFWHelper.init(NSFWConfig(assets))
-  val nsfwBean = nsfwHelper?.scanBitmap(bitmap)!!
-  nsfwBean.sfw
-  nsfwBean.nsfw
-  if(nsfwBean.nsfw>0.3){
-    Log.e("NSFW","图片涉黄")
-  }
+        Classifier.Build()
+            .context(this) //必须调用 否则会有异常抛出
+//            .isOpenGPU(true)//默认不开启GPU加速 部分机型开启会奔溃，自行选择,默认false
+//            .numThreads(10) //分配的线程数 根据手机配置设置，默认1
+            .build()
 ```
-- kotlin可直接使用File.getNsfwScore(mAssetManager: AssetManager): NsfwBean 或 Bitmap.getNsfwScore(mAssetManager: AssetManager): NsfwBean 直接获取鉴定结果（NSFWHelper 1.2.9版本开始支持），比如：
+- 使用：
 
 ```  
-  val bitmap = BitmapFactory.decodeFile(path)
-  
-  val nsfwScore = bitmap.getNsfwScore(assets)
-  
-  if(nsfwBean.nsfw>0.3){
-  
-      Log.e("NSFW","图片涉黄")
-      
-  }
-```
-或
-```
-      val file = File(lm.path)
-      
-      val nsfwScore = file.getNsfwScore(assets)
-      
-      if(nsfwBean.nsfw>0.3){
-      
-          Log.e("NSFW","图片涉黄")
-          
-      }
-      
-```
+         //方式一：
+        val nsfwBean = Classifier.Build().context(this).build().run(bitmap)
+        //方式二
+        val nsfwBean = bitmap.getNsfwScore()
+        //方式三
+        val nsfwBean = file.getNsfwScore()
 
-### 安卓手机直接[点我安装](https://fir.im/1rj9)
+        nsfwBean.sfw   ... 非涉黄数值 数值越大约安全
+        nsfwBean.nsfw   ... 涉黄数值  数值越大约危险
+```
+### 安卓手机直接[点我安装](http://d.7short.com/1rj9)
 
 ### 扫码下载
 
 ![图片](https://github.com/devzwy/open_nsfw_android/blob/master/img/2.png)
 
 ### Demo运行结果：  
-
 
 ![图片](https://github.com/devzwy/open_nsfw_android/blob/master/img/1.png)

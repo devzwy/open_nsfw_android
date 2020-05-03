@@ -47,6 +47,16 @@ class CameraActivity : AppCompatActivity(), SurfaceHolder.Callback, Camera.Previ
         }
     }
 
+    override fun onBackPressed() {
+        try {
+            mCamera.setPreviewCallback(null)
+            mCamera.stopPreview()
+            mCamera.release()
+        } catch (e: Exception) {
+        }
+        super.onBackPressed()
+    }
+
     //翻转摄像机
     fun cameraSwitch() {
         cameraId = if (cameraId == 1) 0 else 1

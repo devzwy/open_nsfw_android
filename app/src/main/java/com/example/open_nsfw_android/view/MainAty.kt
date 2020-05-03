@@ -1,9 +1,11 @@
 package com.example.open_nsfw_android.view
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
+import android.graphics.Camera
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
@@ -13,6 +15,7 @@ import android.widget.Toast
 import com.example.open_nsfw_android.R
 import com.example.open_nsfw_android.util.MainAdapter
 import com.example.open_nsfw_android.util.MyNsfwBean
+import com.example.open_nsfw_android.util.PackageUtils
 import com.luck.picture.lib.PictureSelector
 import com.luck.picture.lib.config.PictureConfig
 import com.luck.picture.lib.config.PictureMimeType
@@ -36,6 +39,7 @@ class MainAty : AppCompatActivity() {
     }
 
 
+    @SuppressLint("SetTextI18n")
     fun init() {
         //检测权限
         checkPermissions()
@@ -47,6 +51,18 @@ class MainAty : AppCompatActivity() {
         bt_sc_from_other.setOnClickListener { selectImgFromD() }
         //跳转网络图片识别页面
         bt_sc_from_internet.setOnClickListener { startActivity(Intent(this, Main2Activity::class.java)) }
+        //实时扫描
+        bt_sc_from_cam.setOnClickListener { scCamera() }
+        tv_version.text = "当前版本号：${PackageUtils.getVersionName(this)}"
+    }
+
+
+    /**
+     * 实时扫描
+     */
+    private fun scCamera() {
+
+        startActivity(Intent(this, CameraActivity::class.java))
     }
 
 
@@ -97,6 +113,7 @@ class MainAty : AppCompatActivity() {
         }).start()
     }
 
+
     private fun addDataToAdapter(mMyNsfwBean: MyNsfwBean) {
         runOnUiThread { mMainAdapter.addData(mMyNsfwBean) }
     }
@@ -112,6 +129,15 @@ class MainAty : AppCompatActivity() {
         ) {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 1);
         }
+
+        if (ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.CAMERA
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), 1);
+        }
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

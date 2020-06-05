@@ -14,7 +14,7 @@
 #### 即将优化Demo使用MVVM模式，可用作开发脚手架使用  
 `Kotlin+okhttp3+rxjava2+retrofit2+koin+glide+greendao+databinding+Livedata`  
   
-![MVVM](https://github.com/devzwy/open_nsfw_android/blob/dev/img/3.jpeg)
+![MVVM](https://github.com/devzwy/open_nsfw_android/blob/dev/img/4.jpg)
 
 ### 使用
 - Add it in your root build.gradle at the end of repositories:

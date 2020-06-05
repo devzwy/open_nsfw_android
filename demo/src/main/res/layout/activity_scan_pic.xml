@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data class="ScanPicBindingView">
+
+        <import type="com.zwy.demo.dbbean.ImageBean" />
+
+        <import type="java.util.List" />
+
+        <import type="androidx.lifecycle.MutableLiveData" />
+
+        <variable
+                name="dataList"
+                type="MutableLiveData&lt;List&lt;ImageBean>>" />
+    </data>
+
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <include layout="@layout/include_actionbar" />
+
+        <androidx.recyclerview.widget.RecyclerView
+                android:background="@color/bgmain"
+                bindScanPicListData="@{dataList}"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/mActionBar" />
+    </RelativeLayout>
+</layout>

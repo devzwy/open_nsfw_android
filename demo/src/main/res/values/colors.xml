@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#2196F3</color>
+    <color name="colorPrimaryDark">#00B0FF</color>
+    <color name="colorAccent">#03DAC5</color>
+    <color name="bgmain">#FAFAFA</color>
+    <color name="white">#FAFAFA</color>
+    <color name="black">#202020</color>
+    <color name="red">#F30606</color>
+    <color name="blackT">#50202020</color>
+
+    <color name="nsfw">#F33D03</color>
+
+</resources>

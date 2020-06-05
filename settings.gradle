@@ -1,1 +1,3 @@
-include ':app', ':OpenNSFW'
+//include ':demo' //开启新demo必须注释 include ':app' 并打开gradle.properties中 注释的两行代码 因为新demo使用了androidx与app模块冲突  demo模块完成：Assets目录识别、网络图片识别
+include ':app'
+include ':OpenNSFW'

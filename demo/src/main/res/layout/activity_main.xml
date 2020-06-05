@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data class="MainLayoutBinding">
+
+        <import type="com.zwy.demo.dbbean.HomeTitle" />
+
+        <import type="java.util.List" />
+
+        <import type="androidx.lifecycle.MutableLiveData" />
+
+        <variable
+                name="titles"
+                type="MutableLiveData&lt;List&lt;HomeTitle>>" />
+    </data>
+
+    <RelativeLayout xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context=".views.MainActivity">
+
+
+        <include layout="@layout/include_actionbar" />
+
+        <androidx.recyclerview.widget.RecyclerView
+                bindHomeData="@{titles}"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@+id/tv_b"
+                android:layout_below="@+id/mActionBar"
+                android:background="@color/bgmain" />
+
+        <TextView
+                android:id="@+id/tv_b"
+                android:layout_width="match_parent"
+                android:background="@color/blackT"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="@string/info"
+                android:textColor="@color/black"
+                android:textSize="12sp" />
+    </RelativeLayout>
+</layout>

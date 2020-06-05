@@ -182,17 +182,17 @@ class CameraActivity : AppCompatActivity(), SurfaceHolder.Callback, Camera.Previ
 
     @SuppressLint("SetTextI18n")
     override fun onPreviewFrame(data: ByteArray?, camera: Camera?) {
-            mCamera.addCallbackBuffer(data)
+        mCamera.addCallbackBuffer(data)
 
-            val size = mCamera.parameters.previewSize;
-            val image = YuvImage(data, ImageFormat.NV21, size.width, size.height, null);
-            val stream = ByteArrayOutputStream()
-            image.compressToJpeg(Rect(0, 0, size.width, size.height), 80, stream)
-            val bmp = BitmapFactory.decodeByteArray(stream.toByteArray(), 0, stream.size())
-            bmp.getNsfwScore()
-            val spText = bmp.getNsfwScore().toString().split(",")
-            textView.text = spText[0] + "\n" + spText[1]
-            stream.close()
+        val size = mCamera.parameters.previewSize;
+        val image = YuvImage(data, ImageFormat.NV21, size.width, size.height, null);
+        val stream = ByteArrayOutputStream()
+        image.compressToJpeg(Rect(0, 0, size.width, size.height), 80, stream)
+        val bmp = BitmapFactory.decodeByteArray(stream.toByteArray(), 0, stream.size())
+        bmp.getNsfwScore()
+        val spText = bmp.getNsfwScore().toString().split(",")
+        textView.text = spText[0] + "\n" + spText[1]
+        stream.close()
     }
 
 }

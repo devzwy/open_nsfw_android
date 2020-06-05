@@ -10,7 +10,11 @@
 ### JavaScript参考[JS相关文档](https://js.tensorflow.org/api/latest/)
 >>> 其中Python、C++均有两种数据喂入的方式，可根据需求选择pb模型或tfLite文件，详细请参考上面的链接.Java的目前只能加载pb模型。其他的平台可自行[百度](https://www.baidu.com)
 ### [pb模型下载](https://github.com/devzwy/NSFW-Python/tree/master/model)
-### 本项目移除测试图片，请下载Demo后自行配图测试 
+### 本项目移除测试图片，请下载Demo后自行配图测试  
+#### 即将优化Demo使用MVVM模式，可用作开发脚手架使用  
+`Kotlin+okhttp3+rxjava2+retrofit2+koin+glide+greendao+databinding+Livedata`  
+  
+![MVVM](https://github.com/devzwy/open_nsfw_android/blob/dev/img/3.jpeg)
 
 ### 使用
 - Add it in your root build.gradle at the end of repositories:

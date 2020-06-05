@@ -1,96 +1,136 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <LinearLayout
+    <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:orientation="horizontal"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
-        <Button
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textSize="12sp"
-                android:id="@+id/bt_sc_assets"
-                android:gravity="center"
-                android:layout_gravity="center"
-                android:padding="15dp"
-                android:text="@string/str_bt1"/>
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-        <Button
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textSize="14sp"
-                android:id="@+id/bt_sc_from_other"
-                android:gravity="center"
-                android:layout_gravity="center"
-                android:padding="15dp"
-                android:text="从相册选取"/>
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                <Button
+                        android:id="@+id/bt_sc_assets"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:padding="15dp"
+                        android:text="@string/str_bt1"
+                        android:textSize="12sp" />
+
+                <Button
+                        android:id="@+id/bt_sc_from_other"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:padding="15dp"
+                        android:text="从相册选取"
+                        android:textSize="14sp" />
 
 
-    </LinearLayout>
+            </LinearLayout>
 
-    <LinearLayout
-            android:layout_width="match_parent"
-            android:orientation="horizontal"
-            android:layout_height="wrap_content">
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
 
+                <Button
+                        android:id="@+id/bt_sc_from_cam"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:padding="15dp"
+                        android:text="实时扫描"
+                        android:textSize="14sp" />
 
-        <Button
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textSize="14sp"
-                android:id="@+id/bt_sc_from_cam"
-                android:gravity="center"
-                android:layout_gravity="center"
-                android:padding="15dp"
-                android:text="实时扫描"/>
+                <Button
+                        android:id="@+id/bt_sc_from_internet"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:padding="15dp"
+                        android:text="识别网络图片"
+                        android:textSize="14sp" />
+            </LinearLayout>
 
-        <Button
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textSize="14sp"
-                android:id="@+id/bt_sc_from_internet"
-                android:gravity="center"
-                android:layout_gravity="center"
-                android:padding="15dp"
-                android:text="识别网络图片"/>
-    </LinearLayout>
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
-    <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:id="@+id/tv_version"
-            android:textSize="15sp"
-            android:textColor="@color/blue"
-            android:padding="5dp"
-            android:text="版本号："/>
+                <Button
+                        android:id="@+id/bt_sc_from_api"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:padding="15dp"
+                        android:text="测试狼友上传的图片"
+                        android:textSize="14sp" />
 
-    <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="sfw:适宜在公共场所浏览，nsfw:不适宜在公共场所浏览，两者都是0-1中间的浮点型值，nsfw数值越大表示色情程度越高，sfw反之"
-            android:padding="15dp"
-            android:textSize="14sp"/>
+                <Button
+                        android:id="@+id/bt_upload"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:padding="15dp"
+                        android:text="我有资源可以提供"
+                        android:textSize="14sp" />
+            </LinearLayout>
 
-    <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="所有图片均来源百度，如有侵权请联系我删除。大尺度图片请自行google来测试"
-            android:textColor="#FF0404"
-            android:padding="15dp"
-            android:textSize="12sp"/>
+            <TextView
+                    android:id="@+id/tv_version"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:text="版本号："
+                    android:textColor="@color/blue"
+                    android:textSize="15sp" />
 
-    <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="15dp"
+                    android:text="sfw:适宜在公共场所浏览，nsfw:不适宜在公共场所浏览，两者都是0-1中间的浮点型值，nsfw数值越大表示色情程度越高，sfw反之"
+                    android:textSize="14sp" />
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="15dp"
+                    android:text="所有图片均来源百度，如有侵权请联系我删除。大尺度图片请自行google来测试"
+                    android:textColor="#FF0404"
+                    android:textSize="12sp" />
+
+            <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+        </LinearLayout>
+
+
+    </android.support.v4.widget.NestedScrollView>
 </LinearLayout>

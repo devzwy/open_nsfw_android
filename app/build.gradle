@@ -58,4 +58,8 @@ dependencies {
 //    implementation project(path: ':nsfw')
 //    implementation project(path: ':OpenNSFW')
     implementation 'com.github.devzwy:open_nsfw_android:1.3.0'
+
+    implementation 'com.squareup.okhttp3:okhttp:4.7.2'
+    implementation "org.koin:koin-android:2.1.5"
+    implementation 'com.google.code.gson:gson:2.8.6'
 }

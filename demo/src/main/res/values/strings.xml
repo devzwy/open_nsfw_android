@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Demo</string>
+    <string name="main_aty_name">离线鉴黄</string>
+    <string name="info">所有图片均来源百度，如有侵权请联系我删除</string>
+    <string name="nsfw_info">网络接收图像并给出输出概率（分数在0-1之间），该概率可用于过滤不适合工作图像的图像。得分小于 0.2表示该图像很可能是安全的。得分大于 0.8表示该图像很有可能是NSFW。中间范围的分数可以针对不同的NSFW级别进行分类。
+根据数据集，用例和图像类型，我们建议开发人员选择合适的阈值。由于问题的困难性质，会出现错误，具体取决于NSFW的用例/定义/容忍度。理想情况下，开发人员应根据对他们的应用程序安全的定义来创建评估集，然后按原样使用模型拟合ROC曲线以选择合适的阈值。</string>
+    <string name="versionstr">当前最新版本：%s</string>
+    <string name="myscan">自定义扫描</string>
+</resources>

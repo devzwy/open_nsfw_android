@@ -1,6 +1,4 @@
 # These are supported funding model platforms
 
-github: [devzwy]
-patreon: devzwy
-tidelift: npm/octo-package
-custom: ["https://www.baidu.com", octocat.com]
+github: devzwy
+custom: ["https://www.baidu.com"]

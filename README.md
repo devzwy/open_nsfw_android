@@ -76,7 +76,7 @@ __请添加__
 ```
         Classifier.Build()
             .context(this) //必须调用 否则会有异常抛出
-//            .isOpenGPU(true)//默认不开启GPU加速 ,默认true
+//            .isOpenGPU(true)//是否开启GPU加速 ,默认true
 //            .numThreads(10) //分配的线程数 根据手机配置设置，默认1
             .build()
 ```

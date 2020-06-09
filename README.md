@@ -2,7 +2,7 @@
 [![](https://jitpack.io/v/devzwy/open_nsfw_android.svg)](https://jitpack.io/#devzwy/open_nsfw_android) [![](https://img.shields.io/badge/Base-TensorFlow-brightgreen.svg)](https://github.com/devzwy/open_nsfw_android) [![](https://img.shields.io/badge/license-Apache%202-green.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 [![](https://img.shields.io/badge/%E4%BD%9C%E8%80%85-赵文贇-orange.svg)](https://github.com/devzwy/open_nsfw_android) [![](https://img.shields.io/badge/QQ-3648415-brightgreen.svg)](https://github.com/devzwy/KUtils)  [![](https://img.shields.io/badge/Mail-dev_zwy@aliyun.com-green.svg)](https://github.com/devzwy/open_nsfw_android) ![Mozilla Add-on](https://img.shields.io/amo/stars/dustman.svg?label=stars&logo=1&logoColor=1&style=popout)
 
-### 色情图片离线识别，基于TensorFlow实现。识别只需200ms,可断网测试，成功率99%，调用只要一行代码，从雅虎的开源项目open_nsfw移植，tflite（6M）为训练好的模型（已量化），该模型文件可用于iOS、java、C++等平台，Python使用生成的tfLite文件检测图片的速度远远快于使用原模型. 
+### 色情图片离线识别，基于TensorFlow实现。识别只需20ms,可断网测试，成功率99%，调用只要一行代码，从雅虎的开源项目open_nsfw移植，该模型文件可用于iOS、java、C++等平台
 ### iOS请参考：[issues13](https://github.com/devzwy/open_nsfw_android/issues/13)
 ### Python参考：[NSFW-Python](https://github.com/devzwy/NSFW-Python)、[Python-TensorflowLite-Api](https://tensorflow.google.cn/api_docs/python/tf/lite)、[Python-Tensorflow-Api](https://tensorflow.google.cn/api_docs/python/tf)
 ### Java参考:[Tensorflow-Api](https://tensorflow.google.cn/api_docs/java/reference/org/tensorflow/package-summary)
@@ -20,8 +20,8 @@
 #### 1.3.1版本优化说明：  
 模型大小改动较大，原量化模型虽小(6M)，但对GPU加速支持不友好，新模型大约26M，完美支持GPU加速并优化识别精度，加速效果明显。建议全部升级该版本。__新版本的GPU加速默认开启状态__，SDK默认会检测设备是否支持，不支持时会自动取消加速(老版本会奔溃)  
 
-### 使用
-- Add it in your root build.gradle at the end of repositories:
+### 使用方式一 （建议）
+- 添加远程仓库支持
 ```
 	allprojects {
 		repositories {
@@ -31,12 +31,27 @@
 	}
 ```
 
-- Add the dependency [![](https://jitpack.io/v/devzwy/open_nsfw_android.svg)](https://jitpack.io/#devzwy/open_nsfw_android)
+- 配置依赖 [![](https://jitpack.io/v/devzwy/open_nsfw_android.svg)](https://jitpack.io/#devzwy/open_nsfw_android) （编译过程报错时请自行使用梯子）
 
 ```
 	dependencies {
 	         //versionCode：上面小icon中最新版本号
 	        implementation 'com.github.devzwy:open_nsfw_android:[versionCode]'
+	}
+
+```
+
+### 使用方式二，源码依赖方式
+- 克隆源码
+```
+	git clone 'https://github.com/devzwy/open_nsfw_android.git'
+```
+
+- 项目中依赖lib
+
+```
+	dependencies {
+	        implementation project(path: ':OpenNSFW')
 	}
 
 ```
@@ -55,13 +70,13 @@ __请添加__
 ```  
 
 
-- 使用(请使用最新版本1.3.0)
+- 使用(请使用最新版本1.3.1)
 - 建议在Application中全局初始化
 
 ```
         Classifier.Build()
             .context(this) //必须调用 否则会有异常抛出
-//            .isOpenGPU(true)//默认不开启GPU加速 部分机型开启会奔溃，自行选择,默认false
+//            .isOpenGPU(true)//默认不开启GPU加速 ,默认true
 //            .numThreads(10) //分配的线程数 根据手机配置设置，默认1
             .build()
 ```

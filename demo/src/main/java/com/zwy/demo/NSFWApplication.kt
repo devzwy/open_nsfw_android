@@ -28,8 +28,8 @@ class NSFWApplication : MultiDexApplication() {
         //初始化鉴黄库NSFW
         Classifier.Build()
             .context(this) //必须调用 否则会有异常抛出
-            .isOpenGPU(true)//默认不开启GPU加速，默认为true
-            .numThreads(100) //分配的线程数 根据手机配置设置，默认1
+//            .isOpenGPU(true)//默认不开启GPU加速，默认为true
+//            .numThreads(100) //分配的线程数 根据手机配置设置，默认1
             .build()
         //全局注入对象
         startKoin {

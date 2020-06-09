@@ -18,7 +18,8 @@ class NsfwBean(val sfw: Float, val nsfw: Float) {
     override fun toString(): String {
         val floatFormat = DecimalFormat("0.0000")
         floatFormat.roundingMode = RoundingMode.HALF_UP
-        return "适宜度(非色情程度):${floatFormat.format(sfw * 100)}%,不适宜度(涉黄程度)：${floatFormat.format(nsfw * 100)}%"
+//        return "适宜度(非色情程度):${floatFormat.format(sfw * 100)}%,不适宜度(涉黄程度)：${floatFormat.format(nsfw * 100)}%"
+        return "sfw:$sfw,nsfw：$nsfw%"
     }
 }
 

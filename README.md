@@ -59,7 +59,7 @@
 ```
 java.lang.NullPointerException: Attempt to invoke virtual method 'com.zwy.nsfw.api.NsfwBean com.zwy.nsfw.Classifier.run(android.graphics.Bitmap)' on a null object reference
 ```
-__请添加__
+__无论哪种方式依赖项目，都需要添加如下代码__
 ```
   android {
         ...

@@ -12,6 +12,7 @@ import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
 import java.util.*
 
+
 class NSFWApplication : MultiDexApplication() {
 
 
@@ -30,6 +31,7 @@ class NSFWApplication : MultiDexApplication() {
             .context(this) //必须调用 否则会有异常抛出
 //            .isOpenGPU(true)//默认不开启GPU加速，默认为true
 //            .numThreads(100) //分配的线程数 根据手机配置设置，默认1
+//            .nsfwModuleFilePath("/data/user/0/com.zwy.demo/files/nsfw.tflite")
             .build()
         //全局注入对象
         startKoin {
@@ -47,4 +49,6 @@ class NSFWApplication : MultiDexApplication() {
         lateinit var context: Context
         var startTime: Long = 0
     }
+
+
 }

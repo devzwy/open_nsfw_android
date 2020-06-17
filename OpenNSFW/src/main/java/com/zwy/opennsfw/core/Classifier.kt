@@ -11,12 +11,10 @@ import mClassifier
 import org.tensorflow.lite.Interpreter
 import org.tensorflow.lite.gpu.GpuDelegate
 import java.io.ByteArrayOutputStream
-import java.io.FileInputStream
+import java.io.File
 import java.lang.Math.max
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
-import java.nio.MappedByteBuffer
-import java.nio.channels.FileChannel
 
 
 class Classifier private constructor(config: Config) {
@@ -101,19 +99,31 @@ class Classifier private constructor(config: Config) {
             return this
         }
 
+        fun nsfwModuleFilePath(nsfwModuleFilePath: String): Build {
+            config.nsfwModuleFilePath = nsfwModuleFilePath
+            return this
+        }
+
         fun build(): Classifier {
             return get(config)
         }
     }
 
+    //"/data/user/0/com.zwy.demo/files/nsfw.tflite"
     init {
+
+        val file = File(
+            config.nsfwModuleFilePath
+                ?: throw java.lang.NullPointerException("未配置模型路径，请调用Classifier.Build().nsfwModuleFilePath(模型路径)初始化")
+        )
+        if (!file.exists()) throw NullPointerException("模型加载失败，请确认路径是否正确")
         try {
             tflite =
-                Interpreter(loadModelFile(config.context!!), getTfLiteOptions(config.isOpenGPU))
+                Interpreter(file, getTfLiteOptions(config.isOpenGPU))
             if (config.isOpenGPU) "开启GPU加速成功".d()
         } catch (e: Exception) {
             "不支持GPU加速".e()
-            tflite = Interpreter(loadModelFile(config.context!!), getTfLiteOptions(false))
+            tflite = Interpreter(file, getTfLiteOptions(false))
         }
 
         imgData = ByteBuffer.allocateDirect(
@@ -136,14 +146,6 @@ class Classifier private constructor(config: Config) {
         }
     }
 
-    private fun loadModelFile(context: Context): MappedByteBuffer {
-        val fileDescriptor = context.assets.openFd("nsfw.tflite")
-        val inputStream = FileInputStream(fileDescriptor.fileDescriptor)
-        val fileChannel = inputStream.channel
-        val startOffset = fileDescriptor.startOffset
-        val declaredLength = fileDescriptor.declaredLength
-        return fileChannel.map(FileChannel.MapMode.READ_ONLY, startOffset, declaredLength)
-    }
 
     private fun convertBitmapToByteBuffer(bitmap_: Bitmap) {
         imgData.rewind()

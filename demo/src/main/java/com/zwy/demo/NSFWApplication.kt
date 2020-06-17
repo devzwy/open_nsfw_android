@@ -28,10 +28,10 @@ class NSFWApplication : MultiDexApplication() {
 
         //初始化鉴黄库NSFW
         Classifier.Build()
-//            .context(this) //必须调用 否则会有异常抛出
+            .context(this) //1.3.4版本可不用调用该代码。其他版本必须调用，否则会有异常抛出
 //            .isOpenGPU(true)//默认不开启GPU加速，默认为true
 //            .numThreads(100) //分配的线程数 根据手机配置设置，默认1
-            .nsfwModuleFilePath("/data/user/0/com.zwy.demo/files/nsfw.tflite")
+//            .nsfwModuleFilePath("/data/user/0/com.zwy.demo/files/nsfw.tflite") //1.3.4版本必须配置模型存放路径，否则会有异常抛出
             .build()
         //全局注入对象
         startKoin {

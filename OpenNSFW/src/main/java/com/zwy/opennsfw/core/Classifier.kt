@@ -68,7 +68,7 @@ class Classifier private constructor(config: Config) {
         private var instance: Classifier? = null
             get() {
                 if (field == null) {
-//                    if (config.context == null) throw RuntimeException("context函数未调用,请使用Classifier.Build().context(context)初始化")
+                    if (config.context == null) throw RuntimeException("context函数未调用,请使用Classifier.Build().context(context)初始化")
                     field = Classifier(config)
                     mClassifier = field
                 }
@@ -115,18 +115,18 @@ class Classifier private constructor(config: Config) {
     //"/data/user/0/com.zwy.demo/files/nsfw.tflite"
     init {
 
-        val file = File(
-            config.nsfwModuleFilePath
-                ?: throw java.lang.NullPointerException("未配置模型路径，请调用Classifier.Build().nsfwModuleFilePath(模型路径)初始化")
-        )
-        if (!file.exists()) throw NullPointerException("模型加载失败，请确认路径是否正确")
+//        val file = File(
+//            config.nsfwModuleFilePath
+//                ?: throw java.lang.NullPointerException("未配置模型路径，请调用Classifier.Build().nsfwModuleFilePath(模型路径)初始化")
+//        )
+//        if (!file.exists()) throw NullPointerException("模型加载失败，请确认路径是否正确")
         try {
             tflite =
-                Interpreter(file, getTfLiteOptions(config.isOpenGPU))
+                Interpreter(loadModelFile(context = config.context!!), getTfLiteOptions(config.isOpenGPU))
             if (config.isOpenGPU) "开启GPU加速成功".d()
         } catch (e: Exception) {
             "不支持GPU加速".e()
-            tflite = Interpreter(file, getTfLiteOptions(false))
+            tflite = Interpreter(loadModelFile(context = config.context!!), getTfLiteOptions(false))
         }
 
         imgData = ByteBuffer.allocateDirect(

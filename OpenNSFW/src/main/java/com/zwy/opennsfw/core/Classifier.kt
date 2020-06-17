@@ -12,9 +12,12 @@ import org.tensorflow.lite.Interpreter
 import org.tensorflow.lite.gpu.GpuDelegate
 import java.io.ByteArrayOutputStream
 import java.io.File
+import java.io.FileInputStream
 import java.lang.Math.max
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import java.nio.MappedByteBuffer
+import java.nio.channels.FileChannel
 
 
 class Classifier private constructor(config: Config) {
@@ -65,7 +68,7 @@ class Classifier private constructor(config: Config) {
         private var instance: Classifier? = null
             get() {
                 if (field == null) {
-                    if (config.context == null) throw RuntimeException("context函数未调用,请使用Classifier.Build().context(context)初始化")
+//                    if (config.context == null) throw RuntimeException("context函数未调用,请使用Classifier.Build().context(context)初始化")
                     field = Classifier(config)
                     mClassifier = field
                 }
@@ -144,6 +147,15 @@ class Classifier private constructor(config: Config) {
             this.setAllowBufferHandleOutput(true)
             this.setAllowFp16PrecisionForFp32(true)
         }
+    }
+
+    private fun loadModelFile(context: Context): MappedByteBuffer {
+        val fileDescriptor = context.assets.openFd("nsfw.tflite")
+        val inputStream = FileInputStream(fileDescriptor.fileDescriptor)
+        val fileChannel = inputStream.channel
+        val startOffset = fileDescriptor.startOffset
+        val declaredLength = fileDescriptor.declaredLength
+        return fileChannel.map(FileChannel.MapMode.READ_ONLY, startOffset, declaredLength)
     }
 
 

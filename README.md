@@ -66,7 +66,7 @@ __除1.3.4版本外，其他任何版本均需要添加如下代码，否则会�
 ```
         Classifier.Build()
             .context(this) //1.3.4版本可不用调用该代码。其他版本必须调用，否则会有异常抛出
-//            .isOpenGPU(true)//默认不开启GPU加速，默认为true
+//            .isOpenGPU(true)//默认为true开启GPU加速
 //            .numThreads(100) //分配的线程数 根据手机配置设置，默认1
 //            .nsfwModuleFilePath("/data/user/0/com.zwy.demo/files/nsfw.tflite") //1.3.4版本必须配置模型存放路径，否则会有异常抛出
             .build()

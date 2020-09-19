@@ -40,6 +40,7 @@ class SplashViewModel : BaseViewModel() {
     }
 
     private fun downloadModelFile() {
+        ToastUtils.showLong("开始后台下载模型文件")
         mAppRepository.dowloadNSFWModelFile()
             .subscribeOn(Schedulers.io()).subscribeOn(AndroidSchedulers.mainThread())
             .observeOn(AndroidSchedulers.mainThread())

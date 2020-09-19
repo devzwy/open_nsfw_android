@@ -3,6 +3,7 @@ package com.zww.sample.model
 import android.app.Application
 import android.graphics.BitmapFactory
 import android.os.Environment
+import com.blankj.utilcode.util.ToastUtils
 import com.google.gson.Gson
 import com.zww.sample.MyNSFWBean
 import com.zww.sample.ScoreBean
@@ -17,7 +18,6 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStream
 import java.util.*
-import kotlin.collections.ArrayList
 
 /**
  * 数据源 这里决定是从缓存获取还是从网络获取
@@ -31,7 +31,7 @@ class AppRepository constructor(
     val mContext by inject(Application::class.java)
 
     val nsfwPath by lazy {
-        "${Environment.getExternalStorageDirectory().absolutePath}/nsfw.tflite"
+        "/data/data/com.zww.sample/nsfw.tflite"
     }
 
     //NSFW是否初始化完成
@@ -52,7 +52,7 @@ class AppRepository constructor(
             val inputStream: InputStream = body.byteStream()
 
             //创建一个文件夹
-            val file = File(Environment.getExternalStorageDirectory(), "nsfw.tflite")
+            val file = File(nsfwPath)
             val outputStream = FileOutputStream(file)
             val bytes = ByteArray(1024)
             var len = 0
@@ -82,6 +82,7 @@ class AppRepository constructor(
      */
     override fun initNSFW() {
         Classifier.Build().context(mContext).isOpenGPU(true).nsfwModuleFilePath(nsfwPath).build()
+        ToastUtils.showLong("NSFW初始化成功")
         "NSFW初始化成功".d()
         isSDKInit = true
     }

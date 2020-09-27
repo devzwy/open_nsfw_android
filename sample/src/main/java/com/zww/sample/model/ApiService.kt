@@ -12,6 +12,6 @@ interface ApiService {
 
     @Streaming
 //    @GET("/nsfw.tflite")
-    @GET("/nsfw.tflite")
+    @GET("/files/nsfw.tflite")
     fun dowloadNSFWModelFile(): Observable<ResponseBody>
 }

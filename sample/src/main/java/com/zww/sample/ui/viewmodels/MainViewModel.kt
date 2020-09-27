@@ -16,6 +16,7 @@ import java.text.DecimalFormat
 class MainViewModel : BaseViewModel() {
     val bName = MutableLiveData<String>("扫描资源文件")
     val selectPhoto = MutableLiveData<Int>(0)
+    val dialogShow = MutableLiveData<Boolean>(true)
     val adapter = object : BaseQuickAdapter<ScoreBean, BaseViewHolder>(R.layout.item_main) {
         override fun convert(holder: BaseViewHolder, item: ScoreBean) {
             holder.getView<ImageView>(R.id.iv).also { iv ->
@@ -42,9 +43,13 @@ class MainViewModel : BaseViewModel() {
             )
         }
     }
+    fun isShowDialog(){
+        dialogShow.value = !mAppRepository.isFileDownloaded()
+    }
 
     fun changeFrom() {
         if (!mAppRepository.isSDKInit) {
+            dialogShow.value = true
             ToastUtils.showShort("SDK未初始化完成，如果为第一次打开请耐心等待下载完成")
             return
         }

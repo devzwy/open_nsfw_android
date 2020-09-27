@@ -10,22 +10,20 @@ android {
         applicationId "com.zww.sample"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName "1.3.4"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
         release {
-            buildConfigField("String", "BASE_URL", '"http://www.68jason.com/"')
-            buildConfigField("String", "NSFW_SAVE_PATH", '"nsfw_modle/nsfw.tflite"')
+            buildConfigField("String", "BASE_URL", '"https://www.jason1024.cn:8888"')
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         debug {
-            buildConfigField("String", "BASE_URL", '"http://www.68jason.com/"')
-            buildConfigField("String", "NSFW_SAVE_PATH", '"/nsfw_modle/nsfw.tflite"')
+            buildConfigField("String", "BASE_URL", '"https://www.jason1024.cn:8888"')
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }

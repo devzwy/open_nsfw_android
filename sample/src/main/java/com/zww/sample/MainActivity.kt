@@ -3,6 +3,7 @@ package com.zww.sample
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.kongzue.dialog.v3.MessageDialog
 import com.luck.picture.lib.PictureSelector
 import com.luck.picture.lib.config.PictureConfig
 import com.luck.picture.lib.config.PictureMimeType
@@ -25,6 +26,26 @@ class MainActivity : BaseActivity<MainLayoutBinding, MainViewModel>() {
                 c()
             }
         })
+        mViewModel.dialogShow.observe(this, androidx.lifecycle.Observer {
+            if (it){
+                MessageDialog.build(this).also {
+                    it.message = "后台正在下载模型文件，大约耗时1分钟，请等待完成。(简化demo未做进度条处理，完成后会有toast提示)"
+                    it.title = "提示"
+                    it.cancelable = false
+                    it.okButton = "好的"
+                    it.show()
+                }
+            }else{
+                MessageDialog.build(this).also {
+                    it.message = "模型已下载，等待模型初始化完成的toast后可点击右上角识别按钮"
+                    it.title = "提示"
+                    it.cancelable = false
+                    it.okButton = "好的"
+                    it.show()
+                }
+            }
+        })
+        mViewModel.isShowDialog()
     }
 
     override fun isInitImmersionBar() = true

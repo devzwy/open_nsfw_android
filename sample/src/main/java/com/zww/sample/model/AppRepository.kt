@@ -82,7 +82,7 @@ class AppRepository constructor(
      */
     override fun initNSFW() {
         Classifier.Build().context(mContext).isOpenGPU(true).nsfwModuleFilePath(nsfwPath).build()
-        ToastUtils.showLong("NSFW初始化成功")
+        ToastUtils.showLong("NSFW初始化成功，可点击右上角识别按钮开始识别")
         "NSFW初始化成功".d()
         isSDKInit = true
     }

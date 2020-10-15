@@ -14,7 +14,6 @@ class MainActivity : AppCompatActivity() {
         resources.assets.also { asset ->
             asset.list("img")?.forEach {
                 "img/$it".also { assetFilePath ->
-                    val startTime = Date().time
                     BitmapFactory.decodeStream(asset.open(assetFilePath)).also {
                         it.getNSFWScore()
                         it.recycle()

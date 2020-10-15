@@ -16,7 +16,7 @@
 ### 本项目移除测试图片，请下载Demo后自行配图测试  
 #### 测试图片
 
-![图片](https://github.com/devzwy/open_nsfw_android/blob/dev/demopic.png)
+![图片](https://github.com/devzwy/open_nsfw_android/blob/dev/img/demopic.png)
 
 
 ### 开始使用

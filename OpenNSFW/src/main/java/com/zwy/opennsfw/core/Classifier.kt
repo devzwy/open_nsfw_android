@@ -112,17 +112,13 @@ class Classifier private constructor(config: Config) {
         }
     }
 
-    //"/data/user/0/com.zwy.demo/files/nsfw.tflite"
     init {
-
-//        val file = File(
-//            config.nsfwModuleFilePath
-//                ?: throw java.lang.NullPointerException("未配置模型路径，请调用Classifier.Build().nsfwModuleFilePath(模型路径)初始化")
-//        )
-//        if (!file.exists()) throw NullPointerException("模型加载失败，请确认路径是否正确")
         try {
             tflite =
-                Interpreter(loadModelFile(context = config.context!!), getTfLiteOptions(config.isOpenGPU))
+                Interpreter(
+                    loadModelFile(context = config.context!!),
+                    getTfLiteOptions(config.isOpenGPU)
+                )
             if (config.isOpenGPU) "开启GPU加速成功".d()
         } catch (e: Exception) {
             "不支持GPU加速".e()
@@ -160,33 +156,25 @@ class Classifier private constructor(config: Config) {
 
 
     private fun convertBitmapToByteBuffer(bitmap_: Bitmap) {
-        imgData.rewind()
-        val W = bitmap_.width
-        val H = bitmap_.height
-
-        val w_off = max((W - INPUT_WIDTH) / 2, 0)
-        val h_off = max((H - INPUT_HEIGHT) / 2, 0)
-
-        //把每个像素的颜色值转为int 存入intValues
-        bitmap_.getPixels(intValues, 0, INPUT_WIDTH, h_off, w_off, INPUT_WIDTH, INPUT_HEIGHT)
-
-        val startTime = SystemClock.uptimeMillis()
-
-        for (color in intValues) {
-            val r1 = Color.red(color)
-            val g1 = Color.green(color)
-            val b1 = Color.blue(color)
-
-            val rr1 = r1 - 123
-            val gg1 = g1 - 117
-            val bb1 = b1 - 104
-
-            imgData.putFloat(bb1.toFloat())
-            imgData.putFloat(gg1.toFloat())
-            imgData.putFloat(rr1.toFloat())
+        SystemClock.uptimeMillis().let { startTime ->
+            imgData.rewind()
+            //把每个像素的颜色值转为int 存入intValues
+            bitmap_.getPixels(
+                intValues,
+                0,
+                INPUT_WIDTH,
+                max((bitmap_.height - INPUT_HEIGHT) / 2, 0),
+                max((bitmap_.width - INPUT_WIDTH) / 2, 0),
+                INPUT_WIDTH,
+                INPUT_HEIGHT
+            )
+            for (color in intValues) {
+                imgData.putFloat((Color.blue(color) - 104).toFloat())
+                imgData.putFloat((Color.green(color) - 117).toFloat())
+                imgData.putFloat((Color.red(color) - 123).toFloat())
+            }
+            "数据装载成功，耗时:${(SystemClock.uptimeMillis() - startTime)} ms".d()
         }
-        val endTime = SystemClock.uptimeMillis()
-        "数据装载成功，耗时:${(endTime - startTime)} ms".d()
     }
 
     //    # 根据路径获取图片 Image.open(path)
@@ -203,41 +191,38 @@ class Classifier private constructor(config: Config) {
 //    # 删除所有单维度的条目
 //    # 输出扫描结果
     fun run(bitmap: Bitmap): NsfwBean {
-        //缩放位图时是否应使用双线性过滤。如果这是正确的，则在缩放时将使用双线性滤波，从而以较差的性能为代价具有更好的图像质量。如果这是错误的，则使用最近邻居缩放，这将使图像质量较差但速度更快。推荐的默认设置是将滤镜设置为“ true”，因为双线性滤镜的成本通常很小，并且改善的图像质量非常重要
-        val stream = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
-        stream.close()
-        val bitmap_256 = Bitmap.createScaledBitmap(bitmap, 256, 256, true)
-
-        convertBitmapToByteBuffer(bitmap_256)
-//
-        val startTime = SystemClock.uptimeMillis()
-        // out
-        val outArray = Array(1) { FloatArray(2) }
-
-        tflite.run(imgData, outArray)
-
-        val endTime = SystemClock.uptimeMillis()
-        val nsfw = NsfwBean(outArray[0][0], outArray[0][1])
-        "扫描完成[${nsfw}]耗时: ${(endTime - startTime)} ms".d()
-        return nsfw
-    }
-
-    fun bitmap2RGB(bitmap: Bitmap): ByteArray? {
-        val bytes = bitmap.byteCount //返回可用于储存此位图像素的最小字节数
-        val buffer =
-            ByteBuffer.allocate(bytes) //  使用allocate()静态方法创建字节缓冲区
-        bitmap.copyPixelsToBuffer(buffer) // 将位图的像素复制到指定的缓冲区
-        val rgba = buffer.array()
-        val pixels = ByteArray(rgba.size / 4 * 3)
-        val count = rgba.size / 4
-
-        //Bitmap像素点的色彩通道排列顺序是RGBA
-        for (i in 0 until count) {
-            pixels[i * 3] = rgba[i * 4] //R
-            pixels[i * 3 + 1] = rgba[i * 4 + 1] //G
-            pixels[i * 3 + 2] = rgba[i * 4 + 2] //B
+        SystemClock.uptimeMillis().let { startTime ->
+            //缩放位图时是否应使用双线性过滤。如果这是正确的，则在缩放时将使用双线性滤波，从而以较差的性能为代价具有更好的图像质量。如果这是错误的，则使用最近邻居缩放，这将使图像质量较差但速度更快。推荐的默认设置是将滤镜设置为“ true”，因为双线性滤镜的成本通常很小，并且改善的图像质量非常重要
+            ByteArrayOutputStream().let { stream ->
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
+                stream.close()
+                convertBitmapToByteBuffer(Bitmap.createScaledBitmap(bitmap, 256, 256, true))
+                // out
+                Array(1) { FloatArray(2) }.apply {
+                    tflite.run(imgData, this)
+                    val nsfw = NsfwBean(this[0][0], this[0][1])
+                    "扫描完成[${nsfw}]耗时: ${(SystemClock.uptimeMillis() - startTime)} ms".d()
+                    return nsfw
+                }
+            }
         }
-        return pixels
     }
+
+//    fun bitmap2RGB(bitmap: Bitmap): ByteArray? {
+//        val bytes = bitmap.byteCount //返回可用于储存此位图像素的最小字节数
+//        val buffer =
+//            ByteBuffer.allocate(bytes) //  使用allocate()静态方法创建字节缓冲区
+//        bitmap.copyPixelsToBuffer(buffer) // 将位图的像素复制到指定的缓冲区
+//        val rgba = buffer.array()
+//        val pixels = ByteArray(rgba.size / 4 * 3)
+//        val count = rgba.size / 4
+//
+//        //Bitmap像素点的色彩通道排列顺序是RGBA
+//        for (i in 0 until count) {
+//            pixels[i * 3] = rgba[i * 4] //R
+//            pixels[i * 3 + 1] = rgba[i * 4 + 1] //G
+//            pixels[i * 3 + 2] = rgba[i * 4 + 2] //B
+//        }
+//        return pixels
+//    }
 }

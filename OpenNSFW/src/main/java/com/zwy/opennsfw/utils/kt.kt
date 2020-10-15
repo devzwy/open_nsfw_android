@@ -14,7 +14,7 @@ fun String.d() = Log.d(TAG, this)
 
 fun String.e() = Log.e(TAG, this)
 
-class NsfwBean(val sfw: Float, val nsfw: Float) {
+open class NsfwBean(val sfw: Float, val nsfw: Float) {
     override fun toString(): String {
         val floatFormat = DecimalFormat("0.0000")
         floatFormat.roundingMode = RoundingMode.HALF_UP

@@ -11,8 +11,9 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/OpenNSFW" />
-            <option value="$PROJECT_DIR$/sample" />
+            <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/initializer" />
+            <option value="$PROJECT_DIR$/nsfw" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

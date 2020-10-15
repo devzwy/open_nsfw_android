@@ -12,8 +12,8 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
-            <option value="$PROJECT_DIR$/initializer" />
             <option value="$PROJECT_DIR$/nsfw" />
+            <option value="$PROJECT_DIR$/nsfw_initializer" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

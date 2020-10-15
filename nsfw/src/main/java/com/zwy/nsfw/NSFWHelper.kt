@@ -1,7 +1,6 @@
 package com.zwy.nsfw
 
 import android.content.Context
-import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.Color
@@ -16,7 +15,7 @@ import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.nio.MappedByteBuffer
 import java.nio.channels.FileChannel
-import java.security.AccessControlContext
+import java.text.DecimalFormat
 
 object NSFWHelper {
 
@@ -146,13 +145,16 @@ object NSFWHelper {
                     // out
                     Array(1) { FloatArray(2) }.apply {
                         mInterpreter.run(imgData, this)
-                        return NSFWScoreBean(
-                            this[0][1],
-                            this[0][0],
-                            timeConsumingToLoadData,
-                            SystemClock.uptimeMillis() - startTime
-                        ).also {
-                            log("扫描完成 -> $it")
+
+                        DecimalFormat("0.000").let {
+                            return NSFWScoreBean(
+                                it.format(this[0][1]).toFloat(),
+                                it.format(this[0][0]).toFloat(),
+                                timeConsumingToLoadData,
+                                SystemClock.uptimeMillis() - startTime
+                            ).also {
+                                log("扫描完成 -> $it")
+                            }
                         }
                     }
                 }

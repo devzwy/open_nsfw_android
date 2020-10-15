@@ -14,6 +14,7 @@
 >>> Python and C + + have two ways to feed data. You can select PB model or tflite file according to your needs. Please refer to the above link for details. Java can only load PB model at present. Other platforms can [Google]（ https://www.google.cn )
 ### This project removes the test picture, please download demo and test by yourself
 #### picture
+![图片](https://github.com/devzwy/open_nsfw_android/blob/dev/demopic.png)
 
 
 

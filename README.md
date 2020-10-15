@@ -13,86 +13,58 @@
 ### JavaScript参考[JS相关文档](https://js.tensorflow.org/api/latest/)
 >>> 其中Python、C++均有两种数据喂入的方式，可根据需求选择pb模型或tfLite文件，详细请参考上面的链接.Java的目前只能加载pb模型。其他的平台可自行[百度](https://www.baidu.com)
 ### 本项目移除测试图片，请下载Demo后自行配图测试  
-#### Demo使用MVVM模式，可用作开发脚手架使用
-`Kotlin+okhttp3+rxjava2+retrofit2+koin+glide+greendao+databinding+Livedata`  
-  
-![MVVM](https://github.com/devzwy/open_nsfw_android/blob/dev/img/4.jpg)
+#### 测试图片
 
-
-#### 1.3.5版本优化说明：  
-模型大小改动较大，原量化模型虽小(6M)，但对GPU加速支持不友好，新模型大约23M，完美支持GPU加速并优化识别精度，加速效果明显。建议全部升级该版本。__新版本的GPU加速默认开启状态__，SDK默认会检测设备是否支持，不支持时会自动取消加速(老版本会奔溃)    
-#### 1.3.4版本特殊说明：  
-由于模型支持GPU加速后模型文件变大，部分用户反馈Apk体积增大，考虑到这方面，在1.3.4版本中增加初始化方式，可通过传入模型文件的路径进行初始化，该模型在`/OpenNSFW/src/main/assets/nsfw.tflite`处，可自行下载并存放适当位置，比如放在后台，app端自行下载后初始化NSFW后使用。初始化方式：
-```
-        Classifier.Build()
-//            .context(this) //1.3.4版本可不用调用该代码。其他版本必须调用，否则会有异常抛出
-//            .isOpenGPU(true)//GPU加速
-//            .numThreads(100) //分配的线程数 根据手机配置设置，默认1
-            .nsfwModuleFilePath("/data/user/0/com.zwy.demo/files/nsfw.tflite") //1.3.4版本必须配置模型存放路径，否则会有异常抛出
-            .build()
-```  
 
 
 ### 开始使用
-- 添加远程仓库支持
-```
-	allprojects {
-		repositories {
-			maven { url 'https://jitpack.io' }
-		}
-	}
-```
 
-- 配置依赖(如果需要自行配置模型路径可适用1.3.4版本，否则请使用最新版本，版本号看右边的icon中的数字) [![](https://jitpack.io/v/devzwy/open_nsfw_android.svg)](https://jitpack.io/#devzwy/open_nsfw_android) （编译过程报错时请自行使用梯子）
+- 开启tflite文件支持
 
-```
-	dependencies {
-	         //versionCode：上面小icon中最新版本号
-	        implementation 'com.github.devzwy:open_nsfw_android:[versionCode]'
-	}
-
-```
-
-- 以下配置1.3.4版本可跳过
-__除1.3.4版本外，其他任何版本均需要添加如下代码，否则会有`java.io.FileNotFoundException: This file can not be opened as a file descriptor; it is probably compressed`异常抛出，因为assets下模型文件较大__
 ```
   android {
         aaptOptions {
             noCompress "tflite"
         }
   }
-```  
-
-
-- 建议在Application中全局初始化
+```
+- 引入依赖
 
 ```
-        Classifier.Build()
-            .context(this) //1.3.4版本可不用调用该代码。其他版本必须调用，否则会有异常抛出
-//            .isOpenGPU(true)//GPU加速
-//            .numThreads(100) //分配的线程数 根据手机配置设置，默认1
-//            .nsfwModuleFilePath("/data/user/0/com.zwy.demo/files/nsfw.tflite") //1.3.4版本必须配置模型存放路径，否则会有异常抛出
-            .build()
+    //可选 快速初始化扫描器，可免去初始化代码
+    implementation 'com.zwy.nsfw:nsfw_initializer:1.3.7'
+    //必须 扫描器核心文件
+    implementation 'com.zwy.nsfw:nsfw:1.3.7'
+```
+
+- 初始化
+
+```
+    //方式一,将模型文件放在Assets根目录下并命名为nsfw.tflite
+    NSFWHelper.init(context = this@Application)
+
+    //方式二,适用于产品对apk大小控制严格，无法将模型文件直接放在apk中，可在用户打开Apk后台静默下载后指定模型路径进行初始化
+    NSFWHelper.init(modelPath = "模型文件存放路径")
+
+    //方式三,将模型文件放在Assets根目录下并命名为nsfw.tflite,引用该库可免去初始化代码
+    implementation 'com.zwy.nsfw:nsfw_initializer:1.3.7'
+
 ```
 - 使用：
 
-```  
-         //方式一：
-        val nsfwBean = Classifier.Build().context(this).build().run(bitmap)
-        //方式二
-        val nsfwBean = bitmap.getNsfwScore()
-        //方式三
-        val nsfwBean = file.getNsfwScore()
-
-        nsfwBean.sfw   ... 非涉黄数值 数值越大约安全
-        nsfwBean.nsfw   ... 涉黄数值  数值越大约危险
 ```
+    //val mNSFWScoreBean:NSFWScoreBean =  File.getNSFWScore()
+    //val mNSFWScoreBean:NSFWScoreBean =  Bitmap.getNSFWScore()
+    //val mNSFWScoreBean:NSFWScoreBean = NSFWHelper.getNSFWScore(bitmap)
+
+    mNSFWScoreBean.sfw   ... 非涉黄数值 数值越大约安全
+    mNSFWScoreBean.nsfw   ... 涉黄数值  数值越大约危险
+    mNSFWScoreBean.timeConsumingToLoadData  ... 装载数据耗时  单位ms
+    mNSFWScoreBean.timeConsumingToScanData  ... 扫描图片耗时  单位ms
+```
+
 ### 安卓手机直接[点我安装](http://d.6short.com/q9cv)
 
 ### 扫码下载
 
 ![图片](https://github.com/devzwy/open_nsfw_android/blob/dev/img/2.png)
-
-### Demo运行结果：  
-
-![图片](https://github.com/devzwy/open_nsfw_android/blob/dev/img/1.png)

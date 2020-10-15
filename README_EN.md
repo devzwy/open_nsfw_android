@@ -13,86 +13,58 @@
 ### JavaScript like this[js doc](https://js.tensorflow.org/api/latest/)
 >>> Python and C + + have two ways to feed data. You can select PB model or tflite file according to your needs. Please refer to the above link for details. Java can only load PB model at present. Other platforms can [Google]（ https://www.google.cn )
 ### This project removes the test picture, please download demo and test by yourself
-#### Demo uses MVVM mode, which can be used to develop scaffolding
-`Kotlin+okhttp3+rxjava2+retrofit2+koin+glide+greendao+databinding+Livedata`  
-  
-![MVVM](https://github.com/devzwy/open_nsfw_android/blob/dev/img/4.jpg)
+#### picture
 
 
-#### 1.3.5 optimization description：
-Although the original quantization model is small (6m), it is not friendly to GPU acceleration. The new model is about 23m, which perfectly supports GPU acceleration and optimizes the recognition accuracy. The acceleration effect is obvious. It is recommended to upgrade all of this version__ The new version of GPU acceleration is on by default__ By default, the SDK will detect whether the device supports it. If it does not, it will automatically cancel the acceleration (the old version will crash)
-#### 1.3.4 Special description of this version：
-Since the model supports GPU acceleration, the model file becomes larger, and some users feedback that the APK volume increases. In this regard, the initialization method is added in version 1.3.4, which can be initialized through the path of the model file. The model can be initialized in '/ opennsfw / SRC / main / assets/ nsfw.tflite `You can download and store it in an appropriate location by yourself, such as in the background, and the app will download it by itself Use after nsfw. Initialization mode:
-```
-        Classifier.Build()
-//            .context(this) //Version 1.3.4 does not need to call this code. Other versions must be called, otherwise an exception will be thrown
-//            .isOpenGPU(true)//GPU acceleration
-//            .numThreads(100) //The number of threads allocated is set according to the phone configuration. The default value is 1
-            .nsfwModuleFilePath("/data/user/0/com.zwy.demo/files/nsfw.tflite") //Version 1.3.4 must configure the model storage path, otherwise an exception will be thrown
-            .build()
-```  
 
+### start use
 
-### dependencies
-- add jitpack repository
-```
-	allprojects {
-		repositories {
-			maven { url 'https://jitpack.io' }
-		}
-	}
-```
+- Open tflite support
 
-- Configuration dependency (if you need to configure the model path by yourself, version 1.3.4 is applicable; otherwise, please use the latest version. For version number, see the number in the icon on the right) [![](https://jitpack.io/v/devzwy/open_nsfw_android.svg)](https://jitpack.io/#devzwy/open_nsfw_android)
-
-```
-	dependencies {
-	         //versionCode：The latest version number in the small icon above
-	        implementation 'com.github.devzwy:open_nsfw_android:[versionCode]'
-	}
-
-```
-
-- The following configuration version 1.3.4 can be skipped
-__Except for version 1.3.4, the following code needs to be added to any other version, otherwise there will be`java.io.FileNotFoundException: This file can not be opened as a file descriptor; it is probably compressed`Exception thrown, because the model file under assets is large__
 ```
   android {
         aaptOptions {
             noCompress "tflite"
         }
   }
-```  
-
-
-- Global initialization in application
+```
+- Dependencies
 
 ```
-        Classifier.Build()
-            .context(this) //Version 1.3.4 does not need to call this code. Other versions must be called, otherwise an exception will be thrown
-//            .isOpenGPU(true)//GPU acceleration
-//            .numThreads(100) //The number of threads allocated is set according to the phone configuration. The default value is 1
-//            .nsfwModuleFilePath("/data/user/0/com.zwy.demo/files/nsfw.tflite") //Version 1.3.4 must configure the model storage path, otherwise an exception will be thrown
-            .build()
+    //Optional Quick initialization of scanner, can avoid initialization code
+    implementation 'com.zwy.nsfw:nsfw_initializer:1.3.7'
+    //must Scanner core file
+    implementation 'com.zwy.nsfw:nsfw:1.3.7'
 ```
-- use：
 
-```  
-         //like this：
-        val nsfwBean = Classifier.Build().context(this).build().run(bitmap)
-        //or like this
-        val nsfwBean = bitmap.getNsfwScore()
-        //or like this
-        val nsfwBean = file.getNsfwScore()
+- Initialization
 
-        nsfwBean.sfw   ... The more approximate the value, the safer it is
-        nsfwBean.nsfw   ... The more approximate the value, the more dangerous it is
 ```
-### android install[click me to installing](http://d.6short.com/q9cv)
+    //Method 1: put the model file in the assets root directory and name it nsfw.tflite
+    NSFWHelper.init(context = this@Application)
 
-### Scan qrcode to download
+    //Method 2 is applicable to the product that strictly controls the size of the APK and cannot directly put the model file in the APK. It can be initialized by specifying the model path after the user opens the APK background and downloads it silently
+    NSFWHelper.init(modelPath = "modelPath")
+
+    //Method 3: put the model file in the assets root directory and name it nsfw.tflite To refer to the library can avoid initializing the code
+    implementation 'com.zwy.nsfw:nsfw_initializer:1.3.7'
+
+```
+- GetNSFWScore：
+
+```
+    //val mNSFWScoreBean:NSFWScoreBean =  File.getNSFWScore()
+    //val mNSFWScoreBean:NSFWScoreBean =  Bitmap.getNSFWScore()
+    //val mNSFWScoreBean:NSFWScoreBean = NSFWHelper.getNSFWScore(bitmap)
+
+    mNSFWScoreBean.sfw   ... The more approximate the non yellow value is, the safer it is
+    mNSFWScoreBean.nsfw   ... The more the Yellow value is, the more dangerous it will be
+    mNSFWScoreBean.timeConsumingToLoadData  ... Load data in milliseconds
+    mNSFWScoreBean.timeConsumingToScanData  ... Scan picture in milliseconds
+```
+
+### Android mobile phone direct[Click me to install](http://d.6short.com/q9cv)
+
+### Scan code to download
 
 ![pic](https://github.com/devzwy/open_nsfw_android/blob/dev/img/2.png)
-
-### Demo run results：
-
-![pic2](https://github.com/devzwy/open_nsfw_android/blob/dev/img/1.png)

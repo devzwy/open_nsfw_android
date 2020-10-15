@@ -35,10 +35,16 @@ object NSFWHelper {
     private val INPUT_HEIGHT = 224
 
     /**
+     * SDK是否初始化完成
+     */
+    private var isSDKInit = false
+
+    /**
      * 手动初始化时必须传入模型文件的路径否则会有异常抛出
      * 自动初始化需要将模型存放在资源文件assets根目录下,且名称必须为：'nsfw.tflite'，不可改动
      */
-    fun init(context: Context? = null, modelPath: String?) {
+    fun init(context: Context? = null, modelPath: String? = null) {
+        if (context == null && modelPath==null) throw RuntimeException("初始化失败，您必须选择一种初始化方式，初始化方式一：NSFWHelper.init(context = this@Application)，初始化方式二：[implementation 'com.zwy.nsfw:nsfw_initializer:+']，初始化方式三：NSFWHelper.init(modelPath = \"模型文件存放路径\")。说明：方式一和方式二均需要手动将模型文件放在Assets根目录下，并命名为nsfw.tflite,方式三适用于产品对apk大小控制严格，无法将模型文件直接放在apk中，可在用户打开Apk后台静默下载后指定模型路径进行初始化，三种方式任选其一即可")
         if (modelPath != null && modelPath.isNotEmpty()) {
             log("手动初始化...")
             File(modelPath).let { modelFile ->
@@ -65,9 +71,13 @@ object NSFWHelper {
         }
         imgData = ByteBuffer.allocateDirect(1 * INPUT_WIDTH * INPUT_HEIGHT * 3 * 4)
         imgData.order(ByteOrder.LITTLE_ENDIAN)
+        isSDKInit = true
     }
 
-
+    //
+    //初始化方式一：NSFWHelper.init(context = this@Application)，初始化方式二：[implementation 'com.zwy.nsfw:nsfw_initializer:+']，初始化方式三：NSFWHelper.init(modelPath = "模型文件存放路径")。说明：方式一和方式二均需要手动将模型文件放在Assets根目录下，并命名为nsfw.tflite,方式三适用于产品对apk大小控制严格，无法将模型文件直接放在apk中，可在用户打开Apk后台静默下载后指定模型路径进行初始化，三种方式任选其一即可
+    //
+    //
     /**
      * 关闭日志输出
      */
@@ -116,6 +126,10 @@ object NSFWHelper {
 //    # 删除所有单维度的条目
 //    # 输出扫描结果
     fun getNSFWScore(bitmap: Bitmap): NSFWScoreBean {
+        if (!isSDKInit) throw RuntimeException(
+            "SDK未初始化，请初始化后使用。方式一：如果您的模型文件存放在Assets下并名称必须为：nsfw.tflite，请直接引用[implementation 'com.zwy.nsfw:nsfw_initializer:1.3.7']可免去初始化过程（模型文件在demo中有存放）" +
+                    "方式二：否则需要指定模型文件的路径，使用：'NSFWHelper.init(modelPath = \"模型文件的路径\")'进行初始化，两者任选其一即可（后者适用于如果模型置于Apk中导致Apk体积超出产品预算时，可将模型文件后台下载至用户手机中后指定路径进行手动初始化）"
+        )
         SystemClock.uptimeMillis().let { startTime ->
             //缩放位图时是否应使用双线性过滤。如果这是正确的，则在缩放时将使用双线性滤波，从而以较差的性能为代价具有更好的图像质量。如果这是错误的，则使用最近邻居缩放，这将使图像质量较差但速度更快。推荐的默认设置是将滤镜设置为“ true”，因为双线性滤镜的成本通常很小，并且改善的图像质量非常重要
             ByteArrayOutputStream().let { stream ->

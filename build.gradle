@@ -8,7 +8,6 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:4.0.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath 'org.greenrobot:greendao-gradle-plugin:3.3.0'
         classpath "guru.stefma.bintrayrelease:bintrayrelease:1.0.0"
     }
 }
@@ -18,9 +17,6 @@ allprojects {
         google()
         jcenter()
         mavenCentral()
-        maven {
-            url 'https://jitpack.io'
-        }
     }
 }
 

@@ -46,4 +46,7 @@ dependencies {
 
     //权限
     implementation 'com.yanzhenjie:permission:2.0.3'
+
+//    implementation 'com.zwy.nsfw:nsfw_initializer:1.3.7'
+//    implementation 'com.zwy.nsfw:nsfw:1.3.7'
 }

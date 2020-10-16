@@ -18,7 +18,7 @@
 
 
 
-### start use（As of version 1.3.7, dependencies are moved from jetpack to Maven repository, which can be directly dependent in the project without adding jetpack support）
+### start use（As of version 1.3.9, dependencies are moved from jetpack to Maven repository, which can be directly dependent in the project without adding jetpack support）
 
 - Open tflite support
 
@@ -29,13 +29,16 @@
         }
   }
 ```
-- Dependencies
+- Dependencies [ ![Download](https://api.bintray.com/packages/devzwy/maven/nsfw/images/download.svg) ](https://bintray.com/devzwy/maven/nsfw/_latestVersion)
 
 ```
     //Optional Quick initialization of scanner, can avoid initialization code
-    implementation 'com.zwy.nsfw:nsfw_initializer:1.3.7'
+    implementation 'com.zwy.nsfw:nsfw_initializer:lastVersion'
     //must Scanner core file
-    implementation 'com.zwy.nsfw:nsfw:1.3.7'
+    implementation 'com.zwy.nsfw:nsfw:lastVersion'
+    //must tensorflow
+    implementation 'org.tensorflow:tensorflow-lite:2.1.0'
+    implementation 'org.tensorflow:tensorflow-lite-gpu:2.1.0'
 ```
 
 - Initialization

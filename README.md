@@ -18,7 +18,7 @@
 ![图片](https://github.com/devzwy/open_nsfw_android/blob/dev/img/demopic.png)
 
 
-### 开始使用（从1.3.7版本开始，依赖从JetPack移动到Maven仓库，可直接在项目中依赖，无需添加jetpack支持）
+### 开始使用（从1.3.9版本开始，依赖从JetPack移动到Maven仓库，可直接在项目中依赖，无需添加jetpack支持）
 
 - 开启tflite文件支持
 
@@ -29,13 +29,16 @@
         }
   }
 ```
-- 引入依赖
+- 引入依赖(lastVersion更换为最新版本，最新版本为右边图片中的数字👉[ ![Download](https://api.bintray.com/packages/devzwy/maven/nsfw/images/download.svg) ](https://bintray.com/devzwy/maven/nsfw/_latestVersion))
 
 ```
     //可选 快速初始化扫描器，可免去初始化代码
-    implementation 'com.zwy.nsfw:nsfw_initializer:1.3.7'
+    implementation 'com.zwy.nsfw:nsfw_initializer:lastVersion'
     //必须 扫描器核心文件
-    implementation 'com.zwy.nsfw:nsfw:1.3.7'
+    implementation 'com.zwy.nsfw:nsfw:lastVersion'
+    //必须 tensorflow 支持库
+    implementation 'org.tensorflow:tensorflow-lite:2.1.0'
+    implementation 'org.tensorflow:tensorflow-lite-gpu:2.1.0'
 ```
 
 - 初始化

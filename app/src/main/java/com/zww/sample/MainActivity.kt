@@ -21,6 +21,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
         mRecyclerView.layoutManager = GridLayoutManager(this, 2)
         mRecyclerView.adapter =
             object : BaseQuickAdapter<MyNSFWBean, BaseViewHolder>(R.layout.item_main) {
@@ -39,7 +40,6 @@ class MainActivity : AppCompatActivity() {
                                 this.setBackgroundColor(Color.parseColor("#803700B3"))
                             }
                         }
-
                     }
 
                 }

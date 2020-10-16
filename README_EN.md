@@ -1,5 +1,5 @@
 # open_nsfw_android
-[![](https://img.shields.io/badge/JCenter-1.3.7-brightgreen.svg)](https://github.com/devzwy/open_nsfw_android)  [![](https://img.shields.io/badge/Base-TensorFlow-brightgreen.svg)](https://github.com/devzwy/open_nsfw_android) [![](https://img.shields.io/badge/license-Apache%202-green.svg)](https://www.apache.org/licenses/LICENSE-2.0)
+[ ![Download](https://api.bintray.com/packages/devzwy/maven/nsfw/images/download.svg) ](https://bintray.com/devzwy/maven/nsfw/_latestVersion)  [![](https://img.shields.io/badge/Base-TensorFlow-brightgreen.svg)](https://github.com/devzwy/open_nsfw_android) [![](https://img.shields.io/badge/license-Apache%202-green.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 [![](https://img.shields.io/badge/%E4%BD%9C%E8%80%85-Jason-orange.svg)](https://github.com/devzwy/open_nsfw_android) [![](https://img.shields.io/badge/QQ-3648415-brightgreen.svg)](https://github.com/devzwy/open_nsfw_android) ![Plugin on redmine.org](https://img.shields.io/redmine/plugin/stars/redmine_xlsx_format_issue_exporter?color=1&logo=1)
 
 [中文文档](https://github.com/devzwy/open_nsfw_android/blob/dev/README.md)
@@ -18,7 +18,7 @@
 
 
 
-### start use
+### start use（As of version 1.3.7, dependencies are moved from jetpack to Maven repository, which can be directly dependent in the project without adding jetpack support）
 
 - Open tflite support
 

@@ -51,7 +51,7 @@
     NSFWHelper.init(modelPath = "模型文件存放路径")
 
     //方式三,将模型文件放在Assets根目录下并命名为nsfw.tflite,引用该库可免去初始化代码
-    implementation 'com.zwy.nsfw:nsfw_initializer:1.3.7'
+    implementation 'com.zwy.nsfw:nsfw_initializer:lastVersion'
 
 ```
 - 使用：

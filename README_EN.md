@@ -52,7 +52,7 @@
     NSFWHelper.init(modelPath = "modelPath")
 
     //Method 3: put the model file in the assets root directory and name it nsfw.tflite To refer to the library can avoid initializing the code
-    implementation 'com.zwy.nsfw:nsfw_initializer:1.3.7'
+    implementation 'com.zwy.nsfw:nsfw_initializer:lastVersion'
 
 ```
 - GetNSFWScore：

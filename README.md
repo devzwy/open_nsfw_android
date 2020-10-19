@@ -43,6 +43,8 @@
 
 - 初始化
 
+[模型下载](https://github.com/devzwy/open_nsfw_android/blob/dev/app/src/main/assets/nsfw.tflite)
+
 ```
     //方式一,将模型文件放在Assets根目录下并命名为nsfw.tflite
     NSFWHelper.init(context = this@Application)

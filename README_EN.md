@@ -42,6 +42,7 @@
 ```
 
 - Initialization
+[nsfw_model_download](https://github.com/devzwy/open_nsfw_android/blob/dev/app/src/main/assets/nsfw.tflite)
 
 ```
     //Method 1: put the model file in the assets root directory and name it nsfw.tflite

@@ -33,11 +33,11 @@ class MainActivity : AppCompatActivity() {
                             this.text =
                                 "nsfw:${it.nsfwScore}\nsfw:${it.sfwScore}\n扫描耗时：${it.timeConsumingToScanData} ms"
                             if (it.nsfwScore>0.7){
-                                this.setBackgroundColor(Color.parseColor("#C1FF0000"))
+                                this.setBackgroundColor(Color.parseColor("#C1FF0001"))
                             }else if (it.nsfwScore>0.5){
-                                this.setBackgroundColor(Color.parseColor("#C1FF9800"))
+                                this.setBackgroundColor(Color.parseColor("#C1FF9801"))
                             }else {
-                                this.setBackgroundColor(Color.parseColor("#803700B3"))
+                                this.setBackgroundColor(Color.parseColor("#803700B1"))
                             }
                         }
                     }

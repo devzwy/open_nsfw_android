@@ -11,7 +11,15 @@ abstract class BaseActivity : AppCompatActivity() {
         initData()
     }
 
+
+    /**
+     * 初始化数据
+     */
     abstract fun initData()
 
+
+    /**
+     * 返回视图ID
+     */
     abstract fun getView(): Int
 }

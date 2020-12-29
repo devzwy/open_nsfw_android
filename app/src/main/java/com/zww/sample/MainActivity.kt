@@ -16,12 +16,8 @@ import com.zwy.nsfw.getNSFWScore
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 
-class MainActivity : AppCompatActivity() {
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
+class MainActivity : BaseActivity() {
+    override fun initData() {
         mRecyclerView.layoutManager = GridLayoutManager(this, 2)
         mRecyclerView.adapter =
             object : BaseQuickAdapter<MyNSFWBean, BaseViewHolder>(R.layout.item_main) {
@@ -33,11 +29,11 @@ class MainActivity : AppCompatActivity() {
                             this.text =
                                 "nsfw:${it.nsfwScore}\nsfw:${it.sfwScore}\n扫描耗时：${it.timeConsumingToScanData} ms"
                             if (it.nsfwScore>0.7){
-                                this.setBackgroundColor(Color.parseColor("#C1FF0001"))
+                                this.setBackgroundColor(Color.parseColor("#C1FF0000"))
                             }else if (it.nsfwScore>0.5){
-                                this.setBackgroundColor(Color.parseColor("#C1FF9801"))
+                                this.setBackgroundColor(Color.parseColor("#C1FF9800"))
                             }else {
-                                this.setBackgroundColor(Color.parseColor("#803700B1"))
+                                this.setBackgroundColor(Color.parseColor("#803700B3"))
                             }
                         }
                     }
@@ -58,7 +54,11 @@ class MainActivity : AppCompatActivity() {
                 }
 
             }
+    }
 
+
+    override fun getView(): Int {
+        return R.layout.activity_main
     }
 }
 

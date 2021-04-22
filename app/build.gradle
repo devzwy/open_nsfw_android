@@ -54,11 +54,11 @@ dependencies {
     kapt 'com.github.bumptech.glide:compiler:4.11.0'
 
 
-    implementation 'com.zwy.nsfw:nsfw_initializer:1.3.9'
-    implementation 'com.zwy.nsfw:nsfw:1.3.9'
+//    implementation 'com.zwy.nsfw:nsfw_initializer:1.3.9'
+//    implementation 'com.zwy.nsfw:nsfw:1.3.9'
     implementation 'org.tensorflow:tensorflow-lite:2.1.0'
     implementation 'org.tensorflow:tensorflow-lite-gpu:2.1.0'
 
 //    implementation project(path: ':nsfw_initializer')
-//    implementation project(path: ':nsfw')
+    implementation project(path: ':nsfw')
 }

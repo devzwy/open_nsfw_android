@@ -1,9 +1,15 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
-apply plugin: 'com.github.dcendents.android-maven'
-apply plugin: 'com.jfrog.bintray'
+//apply plugin: 'com.github.dcendents.android-maven'
+//apply plugin: 'com.jfrog.bintray'
 apply plugin: 'org.jetbrains.dokka'
+apply plugin: 'maven-publish'
+
+
+group 'com.zwy.nsfw'
+version "$libVersion"
+
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.2"
@@ -40,15 +46,16 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.core:core-ktx:1.3.2'
     implementation 'androidx.appcompat:appcompat:1.2.0'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
-    implementation 'org.tensorflow:tensorflow-lite:2.1.0'
-    implementation 'org.tensorflow:tensorflow-lite-gpu:2.1.0'
+    api 'org.tensorflow:tensorflow-lite:2.1.0'
+    api 'org.tensorflow:tensorflow-lite-gpu:2.1.0'
+
+    //协程相关
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.2"
+
 }
 
-version = "$libVersion"
+//version = "$libVersion"
 //group = "com.zwy.nsfw"
 //publish {
 //    userOrg = 'devzwy'
@@ -64,38 +71,116 @@ version = "$libVersion"
 //    options.addStringOption('charSet', 'UTF-8')
 //}
 def siteUrl = 'https://github.com/devzwy/open_nsfw_android'      // 项目的主页(可以写自己的库的GitHub地址)
-def gitUrl = 'https://github.com/devzwy/open_nsfw_android.git'      // Git仓库的url  这个是说明，可随便填
-group = "com.zwy.nsfw"  // （**慎重填写**）这里是groupId ,必须填写  一般填你唯一的包名，对应com.squareup.okhttp3:okhttp:3.4.1中的com.squareup.okhttp3部分
+def gitUrl = 'https://github.com/devzwy/open_nsfw_android.git'      // Git仓库的url
+group = "io.github.devzwy"  // （**慎重填写**）这里是groupId ,必须填写  一般填你唯一的包名，对应com.squareup.okhttp3:okhttp:3.4.1中的com.squareup.okhttp3部分
 
-install {
-    repositories.mavenInstaller {
-        pom {
-            project {
-                packaging 'aar'
-                name 'nsfw'     //项目名字
-                url siteUrl
+
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
+def lUsername = properties.getProperty("username")
+def lPassword = properties.getProperty("password")
+
+publishing {
+
+
+
+    publications {
+        // 推送
+        publishMyProjectMiniexcel(MavenPublication) {
+            // 编译jar包
+//            from components.java
+//            // 打包源码
+//            artifact generateSourcesJar
+//            // javadoc
+//            artifact generateJavadoc
+            pom {
+                name = "nsfw"
+                description = "android端离线鉴黄库"
+                url = "https://github.com/devzwy/open_nsfw_android"
                 licenses {
                     license {
-                        name = 'The Apache Software License, Version 2.0'
-                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                        name = "The Apache License, Version 2.0"
+                        url = "http://www.apache.org/licenses/LICENSE-2.0.txt"
                     }
                 }
                 developers {
                     developer {
-                        id 'z'        //填写开发者的一些基本信息
-                        name 'Jason'    //填写开发者的一些基本信息
-                        email 'dev_zwy@aliyun.com'   //填写开发者的一些基本信息
+                        id = "devzwy"
+                        name = "devzwy"
+                        email = "dev_zwy@aliyun.com"
                     }
                 }
                 scm {
-                    connection gitUrl
-                    developerConnection gitUrl
-                    url siteUrl
+                    connection = gitUrl
+                    developerConnection = gitUrl
+                    url = siteUrl
                 }
             }
         }
     }
+    // 到 https://oss.sonatype.org/#nexus-search; 搜索是否上传成功
+    //Properties properties = new Properties()
+//properties.load(project.rootProject.file('local.properties').newDataInputStream())
+//bintray {
+//    user = properties.getProperty("bintray.username")    //读取 local.properties 文件里面的 bintray.user
+//    key = properties.getProperty("bintray.password")   //读取 local.properties 文件里面的 bintray.apikey
+//    configurations = ['archives']
+
+
+    repositories {
+
+        //configurations = ['archives']
+        // 发布Release版本可在版本号后面带上'-RELEASE'，也可不带
+        maven {
+
+            name 'Release'
+            url 'https://oss.sonatype.org/service/local/staging/deploy/maven2'
+            credentials {
+                username = lUsername
+                password = lPassword
+            }
+        }
+        // 发布Snapshot快照版本必须在版本号后面加上'-SNAPSHOT'
+//        maven {
+//            name = 'Snapshot'
+//            url = 'https://oss.sonatype.org/content/repositories/snapshots'
+//            credentials {
+//                username = "${NEXUS_USERNAME}"
+//                password = "${NEXUS_PASSWORD}"
+//            }
+//        }
+    }
 }
+//install {
+//    repositories.mavenInstaller {
+//        pom {
+//            project {
+//                packaging 'aar'
+//                name 'nsfw'     //项目名字
+//                url siteUrl
+//                licenses {
+//                    license {
+//                        name = 'The Apache Software License, Version 2.0'
+//                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+//                    }
+//                }
+//                developers {
+//                    developer {
+//                        id 'z'        //填写开发者的一些基本信息
+//                        name 'Jason'    //填写开发者的一些基本信息
+//                        email 'dev_zwy@aliyun.com'   //填写开发者的一些基本信息
+//                    }
+//                }
+//                scm {
+//                    connection gitUrl
+//                    developerConnection gitUrl
+//                    url siteUrl
+//                }
+//            }
+//        }
+//    }
+//}
 task generateSourcesJar(type: Jar) {
     group = 'jar'
     from android.sourceSets.main.java.srcDirs
@@ -130,19 +215,19 @@ artifacts {
     archives generateSourcesJar //sourcesJar
 }
 
-Properties properties = new Properties()
-properties.load(project.rootProject.file('local.properties').newDataInputStream())
-bintray {
-    user = properties.getProperty("bintray.user")    //读取 local.properties 文件里面的 bintray.user
-    key = properties.getProperty("bintray.apikey")   //读取 local.properties 文件里面的 bintray.apikey
-    configurations = ['archives']
-    pkg {
-        repo = "maven" //(**慎重填写**)这里填写在bintray中自己新建仓库的名字
-        name = "nsfw"    //（**慎重填写**）发布到JCenter上的项目名字，必须填写，对应com.squareup.okhttp3:okhttp:3.4.1中的okhttp
-        websiteUrl = siteUrl
-        vcsUrl = gitUrl
-        licenses = ["Apache-2.0"]
-        publish = true
-        desc = 'android端离线鉴黄库'
-    }
-}
+//Properties properties = new Properties()
+//properties.load(project.rootProject.file('local.properties').newDataInputStream())
+//bintray {
+//    user = properties.getProperty("bintray.user")    //读取 local.properties 文件里面的 bintray.user
+//    key = properties.getProperty("bintray.apikey")   //读取 local.properties 文件里面的 bintray.apikey
+//    configurations = ['archives']
+//    pkg {
+//        repo = "maven" //(**慎重填写**)这里填写在bintray中自己新建仓库的名字
+//        name = "nsfw"    //（**慎重填写**）发布到JCenter上的项目名字，必须填写，对应com.squareup.okhttp3:okhttp:3.4.1中的okhttp
+//        websiteUrl = siteUrl
+//        vcsUrl = gitUrl
+//        licenses = ["Apache-2.0"]
+//        publish = true
+//        desc = 'android端离线鉴黄库'
+//    }
+//}

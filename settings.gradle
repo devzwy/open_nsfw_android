@@ -1,3 +1,2 @@
-include ':nsfw_initializer'
 include ':nsfw'
 include ':app'

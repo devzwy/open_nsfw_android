@@ -18,55 +18,105 @@
 ![图片](https://github.com/devzwy/open_nsfw_android/blob/dev/img/demopic.png)
 
 
-### 开始使用（从1.3.9版本开始，依赖从JetPack移动到Maven仓库，可直接在项目中依赖，无需添加jetpack支持）
+### 开始使用 (已从jCenter仓库迁移到Maven,注：新版本需要手动下载[nsfw.tflite](https://github.com/devzwy/open_nsfw_android/blob/dev/app/src/main/assets/nsfw.tflite)模型初始化使用)
 
-- 开启tflite文件支持
+- [下载模型文件,并放入assets目录下](https://github.com/devzwy/open_nsfw_android/blob/dev/app/src/main/assets/nsfw.tflite)
+
+- 开启tflite文件读取支持(解决模型放在assets目录下无法读取的问题。如果模型不放在assets目录下可跳过该步骤)
 
 ```
-  android {
-        aaptOptions {
-            noCompress "tflite"
+android {
+
+    ...
+
+    aaptOptions {
+        noCompress "tflite"
+    }
+}
+```
+- 引入依赖
+
+```
+    dependencies {
+        ...
+        implementation 'io.github.devzwy:nsfw:1.5.1'
+    }
+
+```
+
+- 初始化（建议在Application中进行）
+
+```
+    class KtApp : Application() {
+        override fun onCreate() {
+            super.onCreate()
+
+            //开启日志输出，可选
+            NSFWHelper.openDebugLog()
+
+            //扫描前必须初始化
+            NSFWHelper.initHelper(
+                context = this)
+
+            //初始化api原型
+            /* NSFW初始化函数 内部日志默认关闭，调试环境可使用openDebugLog()开启日志*/
+            fun initHelper(
+                context: Context, //建议传入application,传入activity可能会有内存泄漏
+                modelPath: String? = null,//模型文件路径，为空时将默认从Assets下读取
+                isOpenGPU: Boolean = true, //是否开启GPU扫描加速，部分机型兼容不友好的可关闭。默认开启
+                numThreads: Int = 4 //扫描数据时内部分配的线程 默认4
+            )
+
         }
-  }
-```
-- 引入依赖(lastVersion更换为最新版本，最新版本为右边图片中的数字👉[ ![Download](https://api.bintray.com/packages/devzwy/maven/nsfw/images/download.svg) ](https://bintray.com/devzwy/maven/nsfw/_latestVersion))
-
-```
-    //可选 快速初始化扫描器，可免去初始化代码
-    implementation 'com.zwy.nsfw:nsfw_initializer:lastVersion'
-    //必须 扫描器核心文件
-    implementation 'com.zwy.nsfw:nsfw:lastVersion'
-    //必须 tensorflow 支持库
-    implementation 'org.tensorflow:tensorflow-lite:2.1.0'
-    implementation 'org.tensorflow:tensorflow-lite-gpu:2.1.0'
+    }
 ```
 
-- 初始化
+- 支持的api列表，带返回值的为同步，传入函数的为异步：
 
-[模型下载](https://github.com/devzwy/open_nsfw_android/blob/dev/app/src/main/assets/nsfw.tflite)
+>> [NSFWHelper.getNSFWScore(file: File): NSFWScoreBean]()
+>> [getNSFWScore(file: File, onResult: ((NSFWScoreBean) -> Unit))]()
+>> [getNSFWScore(filePath: String): NSFWScoreBean]()
+>> [getNSFWScore(filePath: String, onResult: ((NSFWScoreBean) -> Unit))]()
+>> [getNSFWScore(bitmap: Bitmap): NSFWScoreBean]()
+>> [getNSFWScore(bitmap: Bitmap, onResult: ((NSFWScoreBean) -> Unit))]()
 
+- 识别结果说明
 ```
-    //方式一,将模型文件放在Assets根目录下并命名为nsfw.tflite
-    NSFWHelper.init(context = this@Application)
-
-    //方式二,适用于产品对apk大小控制严格，无法将模型文件直接放在apk中，可在用户打开Apk后台静默下载后指定模型路径进行初始化
-    NSFWHelper.init(modelPath = "模型文件存放路径")
-
-    //方式三,将模型文件放在Assets根目录下并命名为nsfw.tflite,引用该库可免去初始化代码
-    implementation 'com.zwy.nsfw:nsfw_initializer:lastVersion'
-
-```
-- 使用：
-
-```
-    //val mNSFWScoreBean:NSFWScoreBean =  File.getNSFWScore()
-    //val mNSFWScoreBean:NSFWScoreBean =  Bitmap.getNSFWScore()
-    //val mNSFWScoreBean:NSFWScoreBean = NSFWHelper.getNSFWScore(bitmap)
-
     mNSFWScoreBean.sfw   ... 非涉黄数值 数值越大约安全
     mNSFWScoreBean.nsfw   ... 涉黄数值  数值越大约危险
     mNSFWScoreBean.timeConsumingToLoadData  ... 装载数据耗时  单位ms
     mNSFWScoreBean.timeConsumingToScanData  ... 扫描图片耗时  单位ms
+```
+
+- 调用参考
+
+```
+    //异步方式
+    NSFWHelper.getNSFWScore(item.bitmap) {
+        this.text =
+            "nsfw:${it.nsfwScore}\nsfw:${it.sfwScore}\n扫描耗时：${it.timeConsumingToScanData} ms"
+        if (it.nsfwScore > 0.7) {
+            this.setBackgroundColor(Color.parseColor("#C1FF0000"))
+        } else if (it.nsfwScore > 0.5) {
+            this.setBackgroundColor(Color.parseColor("#C1FF9800"))
+        } else {
+            this.setBackgroundColor(Color.parseColor("#803700B3"))
+        }
+    }
+
+    //同步方式
+    NSFWHelper.getNSFWScore(item.bitmap).let {
+        this.text =
+            "nsfw:${it.nsfwScore}\nsfw:${it.sfwScore}\n扫描耗时：${it.timeConsumingToScanData} ms"
+        if (it.nsfwScore > 0.7) {
+            this.setBackgroundColor(Color.parseColor("#C1FF0000"))
+        } else if (it.nsfwScore > 0.5) {
+            this.setBackgroundColor(Color.parseColor("#C1FF9800"))
+        } else {
+            this.setBackgroundColor(Color.parseColor("#803700B3"))
+        }
+    }
+
 ```
 
 ### 安卓手机直接[点我安装](http://d.6short.com/q9cv)

@@ -26,6 +26,8 @@ class MainActivity : BaseActivity() {
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
                         .into(holder.getView(R.id.iv))
                     holder.getView<TextView>(R.id.tv).apply {
+
+                        //异步方式
                         NSFWHelper.getNSFWScore(item.bitmap) {
                             this.text =
                                 "nsfw:${it.nsfwScore}\nsfw:${it.sfwScore}\n扫描耗时：${it.timeConsumingToScanData} ms"
@@ -38,8 +40,8 @@ class MainActivity : BaseActivity() {
                             }
                         }
 
-
-//                        item.nsfwScoreBean.let {
+//                        //同步方式
+//                        NSFWHelper.getNSFWScore(item.bitmap).let {
 //                            this.text =
 //                                "nsfw:${it.nsfwScore}\nsfw:${it.sfwScore}\n扫描耗时：${it.timeConsumingToScanData} ms"
 //                            if (it.nsfwScore > 0.7) {
@@ -50,6 +52,7 @@ class MainActivity : BaseActivity() {
 //                                this.setBackgroundColor(Color.parseColor("#803700B3"))
 //                            }
 //                        }
+
                     }
 
                 }

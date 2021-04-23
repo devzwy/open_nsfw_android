@@ -1,6 +1,7 @@
 package io.github.devzwy.nsfw
 
-import android.app.Application
+import android.content.Context
+import android.content.res.AssetFileDescriptor
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
@@ -13,16 +14,16 @@ import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileNotFoundException
-import java.lang.Exception
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.nio.channels.FileChannel
 import java.text.DecimalFormat
 
+
 object NSFWHelper {
 
     /*为空时表示未初始化SDK*/
-    private var nsfwApplication: Application? = null
+    private var nsfwApplication: Context? = null
 
     /*扫描器*/
     private lateinit var mInterpreter: Interpreter
@@ -43,22 +44,17 @@ object NSFWHelper {
      * [modelPath] 模型文件路径，为空时将默认从Assets下读取
      * [isOpenGPU] 是否开启GPU扫描加速，部分机型兼容不友好的可关闭。默认开启
      * [numThreads] 扫描数据时内部分配的线程 默认4
-     * [onInitSuccess] 初始化成功的回调
-     * [onInitError] 初始化失败的回调，携带一个string
      */
     fun initHelper(
-        context: Application,
+        context: Context,
         modelPath: String? = null,
         isOpenGPU: Boolean = true,
-        numThreads: Int = 4,
-        onInitSuccess: (() -> Unit)? = null,
-        onInitError: ((String) -> Unit)? = null
+        numThreads: Int = 4
     ) {
 
         nsfwApplication?.let {
 
             logD("NSFWHelper已初始化，自动跳过本次初始化！")
-            onInitError?.let { it1 -> it1("请勿重复初始化") }
 
             return
         }
@@ -72,6 +68,7 @@ object NSFWHelper {
                 logD("未传入模型路径，尝试从Assets下读取'nsfw.tflite'模型文件")
                 //指定模型为空时默认寻找assets目录下名称为nsfw.tflite的模型
                 try {
+
                     mInterpreter = Interpreter(
                         nsfwApplication!!.assets.openFd("nsfw.tflite")
                             .let { fileDescriptor ->
@@ -82,15 +79,13 @@ object NSFWHelper {
                                 )
                             }, options
                     )
-                } catch (e: Exception) {
+                } catch (mFileNotFoundException: FileNotFoundException) {
 
                     nsfwApplication = null
 
                     logE("未从Assets下成功读取'nsfw.tflite'模型")
-                    onInitError?.let { it("未从Assets下成功读取'nsfw.tflite'模型") }
 
-
-                    return
+                    throw NSFWException("未从Assets下成功读取'nsfw.tflite'模型")
                 }
 
                 logD("从Assets下加载模型文件成功!")
@@ -121,17 +116,13 @@ object NSFWHelper {
                     nsfwApplication = null
 
                     logE("模型配置错误，读取失败")
-                    onInitError?.let { it("未能正确读取到模型文件 '${modelPath}'") }
-
-
-                    return
+                    throw NSFWException("未能正确读取到模型文件 '${modelPath}'")
                 }
             }
 
         }
 
         logD("NSFWHelper初始化成功!${if (isOpenGPU) "GPU加速已成功开启" else "GPU加速未开启"}")
-        onInitSuccess?.let { it() }
 
     }
 
@@ -169,12 +160,7 @@ object NSFWHelper {
      * 同步扫描文件NSFW数值
      */
     fun getNSFWScore(file: File): NSFWScoreBean {
-
-        nsfwApplication?.let {
-            return getNSFWScore(BitmapFactory.decodeFile(file.path))
-        }
-
-        throw NSFWUnInitException()
+        return getNSFWScore(BitmapFactory.decodeFile(file.path))
     }
 
 
@@ -183,10 +169,6 @@ object NSFWHelper {
      */
     fun getNSFWScore(file: File, onResult: ((NSFWScoreBean) -> Unit)) {
 
-        if (nsfwApplication == null) {
-            throw NSFWUnInitException()
-        }
-
         GlobalScope.launch(Dispatchers.IO) {
             getNSFWScore(BitmapFactory.decodeFile(file.path)).let { result ->
                 withContext(Dispatchers.Main) {
@@ -194,18 +176,14 @@ object NSFWHelper {
                 }
             }
         }
+
     }
 
     /**
      * 同步扫描文件NSFW数值
      */
     fun getNSFWScore(filePath: String): NSFWScoreBean {
-
-        nsfwApplication?.let {
-            return getNSFWScore(BitmapFactory.decodeFile(filePath))
-        }
-        throw NSFWUnInitException()
-
+        return getNSFWScore(BitmapFactory.decodeFile(filePath))
     }
 
 
@@ -214,10 +192,6 @@ object NSFWHelper {
      */
     fun getNSFWScore(filePath: String, onResult: ((NSFWScoreBean) -> Unit)) {
 
-        if (nsfwApplication == null) {
-            throw NSFWUnInitException()
-        }
-
         GlobalScope.launch(Dispatchers.IO) {
             getNSFWScore(BitmapFactory.decodeFile(filePath)).let { result ->
                 withContext(Dispatchers.Main) {
@@ -225,6 +199,7 @@ object NSFWHelper {
                 }
             }
         }
+
     }
 
     /**
@@ -268,7 +243,7 @@ object NSFWHelper {
                 }
             }
         }
-        throw NSFWUnInitException()
+        throw NSFWException("请调用NSFWHelper.init(...)函数后再试!")
 
     }
 
@@ -289,10 +264,6 @@ object NSFWHelper {
 //    # 使用index关键字喂入模型
 //    # 删除所有单维度的条目
 //    # 输出扫描结果
-        if (nsfwApplication == null) {
-            logE("未初始化")
-            throw NSFWUnInitException()
-        }
 
         GlobalScope.launch(Dispatchers.IO) {
             getNSFWScore(bitmap).let { result ->

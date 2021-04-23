@@ -27,6 +27,7 @@ android {
         }
     }
 
+
     aaptOptions {
         noCompress "tflite"
     }
@@ -61,4 +62,5 @@ dependencies {
 
 //    implementation project(path: ':nsfw_initializer')
     implementation project(path: ':nsfw')
+//    implementation 'io.github.devzwy:nsfw:1.5.0'
 }

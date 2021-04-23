@@ -24,6 +24,6 @@ fun Boolean.assetBoolean(onTrue: ()-> Unit,onFalse: ()-> Unit){
     if (this) onTrue() else onFalse()
 }
 
-class NSFWUnInitException:Exception("请调用NSFWHelper.init(...)函数后再试!")
+class NSFWException(str:String):Exception(str)
 
 data class CovertBitmapResultBean(val imgData: ByteBuffer,val exceTime:Long)

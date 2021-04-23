@@ -1,5 +1,5 @@
 # open_nsfw_android
-[ ![Download](https://api.bintray.com/packages/devzwy/maven/nsfw/images/download.svg) ](https://bintray.com/devzwy/maven/nsfw/_latestVersion)  [![](https://img.shields.io/badge/Base-TensorFlow-brightgreen.svg)](https://github.com/devzwy/open_nsfw_android) [![](https://img.shields.io/badge/license-Apache%202-green.svg)](https://www.apache.org/licenses/LICENSE-2.0)
+[![](https://img.shields.io/badge/Download-1.5.1-brightgreen.svg)](https://mvnrepository.com/artifact/io.github.devzwy/nsfw)  [![](https://img.shields.io/badge/Base-TensorFlow-brightgreen.svg)](https://github.com/devzwy/open_nsfw_android) [![](https://img.shields.io/badge/license-Apache%202-green.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 [![](https://img.shields.io/badge/%E4%BD%9C%E8%80%85-赵文贇-orange.svg)](https://github.com/devzwy/open_nsfw_android) [![](https://img.shields.io/badge/QQ-3648415-brightgreen.svg)](https://github.com/devzwy/open_nsfw_android) ![Plugin on redmine.org](https://img.shields.io/redmine/plugin/stars/redmine_xlsx_format_issue_exporter?color=1&logo=1)
 
 [English Doc](https://github.com/devzwy/open_nsfw_android/blob/dev/README_EN.md)
@@ -17,14 +17,14 @@
 
 ![图片](https://github.com/devzwy/open_nsfw_android/blob/dev/img/demopic.png)
 
-## 注意 已从jCenter仓库迁移到Maven,注：新版本需要手动下载[nsfw.tflite](https://github.com/devzwy/open_nsfw_android/blob/dev/app/src/main/assets/nsfw.tflite)模型初始化使用
+### 🔥🔥🔥🔥🔥🔥已从jCenter仓库迁移到Maven,原引用地址发生变更，建议所有老用户升级到新版本。新版本需要手动下载[nsfw.tflite](https://github.com/devzwy/open_nsfw_android/blob/dev/app/src/main/assets/nsfw.tflite)模型初始化使用 🔥🔥🔥🔥🔥🔥
 
 ### 开始使用
 
-- __[下载模型文件](https://github.com/devzwy/open_nsfw_android/blob/dev/app/src/main/assets/nsfw.tflite),并放入assets目录下__
+- 🔥__[下载模型文件](https://github.com/devzwy/open_nsfw_android/blob/dev/app/src/main/assets/nsfw.tflite),并放入assets目录下__
 ![图片](https://github.com/devzwy/open_nsfw_android/blob/dev/img/assets.png)
 
-- __开启tflite文件读取支持__(解决模型放在assets目录下无法读取的问题。如果模型不放在assets目录下可跳过该步骤)
+- 🔥__开启tflite文件读取支持__(解决模型放在assets目录下无法读取的问题。如果模型不放在assets目录下可跳过该步骤)
 
 ```
 android {
@@ -36,7 +36,7 @@ android {
     }
 }
 ```
-- __引入依赖__
+- 🔥__引入依赖__
 
 ```
     dependencies {
@@ -46,7 +46,7 @@ android {
 
 ```
 
-- __初始化__（建议在Application中进行）
+- 🔥__初始化__（建议在Application中进行）
 
 ```
     class KtApp : Application() {
@@ -73,7 +73,7 @@ android {
     }
 ```
 
-- __支持的api列表__ 带返回值的为同步，传入函数的为异步：
+- 🔥__支持的api列表__ 带返回值的为同步，传入函数的为异步：
 
 >>>> [NSFWHelper.getNSFWScore(file: File): NSFWScoreBean]()
 
@@ -88,7 +88,7 @@ android {
 >>>> [getNSFWScore(bitmap: Bitmap, onResult: ((NSFWScoreBean) -> Unit))]()
 
 
-- __识别结果说明__
+- 🔥__识别结果说明__
 ```
     NSFWScoreBean.sfw   ... 非涉黄数值 数值越大约安全
     NSFWScoreBean.nsfw   ... 涉黄数值  数值越大约危险
@@ -96,7 +96,7 @@ android {
     NSFWScoreBean.timeConsumingToScanData  ... 扫描图片耗时  单位ms
 ```
 
-- __调用参考__
+- 🔥__调用参考__
 
 ```
     //异步方式
@@ -127,8 +127,8 @@ android {
 
 ```
 
-### 安卓手机直接[点我安装](http://d.6short.com/q9cv)
+### 🔥安卓手机直接[点我安装](http://d.6short.com/q9cv)
 
-### 扫码下载
+### 🔥扫码下载
 
 ![图片](https://github.com/devzwy/open_nsfw_android/blob/dev/img/2.png)

@@ -71,17 +71,17 @@ android {
 
 - 🔥 __支持的api列表__ 带返回值的为同步，传入函数的为异步：
 
->>>> [NSFWHelper.getNSFWScore(file: File): NSFWScoreBean]()
+>>>> __同步识别文件：__ [NSFWHelper.getNSFWScore(file: File): NSFWScoreBean](https://github.com/devzwy/open_nsfw_android/blob/dev/nsfw/src/main/java/io/github/devzwy/nsfw/NSFWHelper.kt)
 
->>>> [getNSFWScore(file: File, onResult: ((NSFWScoreBean) -> Unit))]()
+>>>> __异步识别文件：__ [getNSFWScore(file: File, onResult: ((NSFWScoreBean) -> Unit))](https://github.com/devzwy/open_nsfw_android/blob/dev/nsfw/src/main/java/io/github/devzwy/nsfw/NSFWHelper.kt)
 
->>>> [getNSFWScore(filePath: String): NSFWScoreBean]()
+>>>> __同步识别文件：__ [getNSFWScore(filePath: String): NSFWScoreBean](https://github.com/devzwy/open_nsfw_android/blob/dev/nsfw/src/main/java/io/github/devzwy/nsfw/NSFWHelper.kt)
 
->>>> [getNSFWScore(filePath: String, onResult: ((NSFWScoreBean) -> Unit))]()
+>>>> __异步识别文件：__ [getNSFWScore(filePath: String, onResult: ((NSFWScoreBean) -> Unit))](https://github.com/devzwy/open_nsfw_android/blob/dev/nsfw/src/main/java/io/github/devzwy/nsfw/NSFWHelper.kt)
 
->>>> [getNSFWScore(bitmap: Bitmap): NSFWScoreBean]()
+>>>> __同步识别bitmap：__ [getNSFWScore(bitmap: Bitmap): NSFWScoreBean](https://github.com/devzwy/open_nsfw_android/blob/dev/nsfw/src/main/java/io/github/devzwy/nsfw/NSFWHelper.kt)
 
->>>> [getNSFWScore(bitmap: Bitmap, onResult: ((NSFWScoreBean) -> Unit))]()
+>>>> __异步识别bitmap：__ [getNSFWScore(bitmap: Bitmap, onResult: ((NSFWScoreBean) -> Unit))](https://github.com/devzwy/open_nsfw_android/blob/dev/nsfw/src/main/java/io/github/devzwy/nsfw/NSFWHelper.kt)
 
 
 - 🔥 __识别结果说明__

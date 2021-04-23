@@ -75,19 +75,25 @@ android {
 
 - __支持的api列表__ 带返回值的为同步，传入函数的为异步：
 
->> [NSFWHelper.getNSFWScore(file: File): NSFWScoreBean]()
->> [getNSFWScore(file: File, onResult: ((NSFWScoreBean) -> Unit))]()
->> [getNSFWScore(filePath: String): NSFWScoreBean]()
->> [getNSFWScore(filePath: String, onResult: ((NSFWScoreBean) -> Unit))]()
->> [getNSFWScore(bitmap: Bitmap): NSFWScoreBean]()
->> [getNSFWScore(bitmap: Bitmap, onResult: ((NSFWScoreBean) -> Unit))]()
+>>>> [NSFWHelper.getNSFWScore(file: File): NSFWScoreBean]()
+
+>>>> [getNSFWScore(file: File, onResult: ((NSFWScoreBean) -> Unit))]()
+
+>>>> [getNSFWScore(filePath: String): NSFWScoreBean]()
+
+>>>> [getNSFWScore(filePath: String, onResult: ((NSFWScoreBean) -> Unit))]()
+
+>>>> [getNSFWScore(bitmap: Bitmap): NSFWScoreBean]()
+
+>>>> [getNSFWScore(bitmap: Bitmap, onResult: ((NSFWScoreBean) -> Unit))]()
+
 
 - __识别结果说明__
 ```
-    mNSFWScoreBean.sfw   ... 非涉黄数值 数值越大约安全
-    mNSFWScoreBean.nsfw   ... 涉黄数值  数值越大约危险
-    mNSFWScoreBean.timeConsumingToLoadData  ... 装载数据耗时  单位ms
-    mNSFWScoreBean.timeConsumingToScanData  ... 扫描图片耗时  单位ms
+    NSFWScoreBean.sfw   ... 非涉黄数值 数值越大约安全
+    NSFWScoreBean.nsfw   ... 涉黄数值  数值越大约危险
+    NSFWScoreBean.timeConsumingToLoadData  ... 装载数据耗时  单位ms
+    NSFWScoreBean.timeConsumingToScanData  ... 扫描图片耗时  单位ms
 ```
 
 - __调用参考__

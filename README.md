@@ -17,12 +17,14 @@
 
 ![图片](https://github.com/devzwy/open_nsfw_android/blob/dev/img/demopic.png)
 
+## 注意 已从jCenter仓库迁移到Maven,注：新版本需要手动下载[nsfw.tflite](https://github.com/devzwy/open_nsfw_android/blob/dev/app/src/main/assets/nsfw.tflite)模型初始化使用
 
-### 开始使用 (已从jCenter仓库迁移到Maven,注：新版本需要手动下载[nsfw.tflite](https://github.com/devzwy/open_nsfw_android/blob/dev/app/src/main/assets/nsfw.tflite)模型初始化使用)
+### 开始使用
 
-- [下载模型文件,并放入assets目录下](https://github.com/devzwy/open_nsfw_android/blob/dev/app/src/main/assets/nsfw.tflite)
+- __[下载模型文件](https://github.com/devzwy/open_nsfw_android/blob/dev/app/src/main/assets/nsfw.tflite),并放入assets目录下__
+![图片](https://github.com/devzwy/open_nsfw_android/blob/dev/img/assets.png)
 
-- 开启tflite文件读取支持(解决模型放在assets目录下无法读取的问题。如果模型不放在assets目录下可跳过该步骤)
+- __开启tflite文件读取支持__(解决模型放在assets目录下无法读取的问题。如果模型不放在assets目录下可跳过该步骤)
 
 ```
 android {
@@ -34,7 +36,7 @@ android {
     }
 }
 ```
-- 引入依赖
+- __引入依赖__
 
 ```
     dependencies {
@@ -44,7 +46,7 @@ android {
 
 ```
 
-- 初始化（建议在Application中进行）
+- __初始化__（建议在Application中进行）
 
 ```
     class KtApp : Application() {
@@ -71,7 +73,7 @@ android {
     }
 ```
 
-- 支持的api列表，带返回值的为同步，传入函数的为异步：
+- __支持的api列表__ 带返回值的为同步，传入函数的为异步：
 
 >> [NSFWHelper.getNSFWScore(file: File): NSFWScoreBean]()
 >> [getNSFWScore(file: File, onResult: ((NSFWScoreBean) -> Unit))]()
@@ -80,7 +82,7 @@ android {
 >> [getNSFWScore(bitmap: Bitmap): NSFWScoreBean]()
 >> [getNSFWScore(bitmap: Bitmap, onResult: ((NSFWScoreBean) -> Unit))]()
 
-- 识别结果说明
+- __识别结果说明__
 ```
     mNSFWScoreBean.sfw   ... 非涉黄数值 数值越大约安全
     mNSFWScoreBean.nsfw   ... 涉黄数值  数值越大约危险
@@ -88,7 +90,7 @@ android {
     mNSFWScoreBean.timeConsumingToScanData  ... 扫描图片耗时  单位ms
 ```
 
-- 调用参考
+- __调用参考__
 
 ```
     //异步方式

@@ -6,6 +6,7 @@
 
 
 ### 色情图片离线识别，基于TensorFlow实现。识别只需20ms,可断网测试，成功率99%，调用只要一行代码，从雅虎的开源项目open_nsfw移植，该模型文件可用于iOS、java、C++等平台
+### ⚠️⚠️⚠️ 已从jCenter仓库迁移到Maven,原引用地址发生变更，建议所有老用户升级到新版本。新版本需要手动下载[nsfw.tflite](https://github.com/devzwy/open_nsfw_android/blob/dev/app/src/main/assets/nsfw.tflite)模型初始化使用
 ### iOS请参考：[issues13](https://github.com/devzwy/open_nsfw_android/issues/13)
 ### Python参考：[NSFW-Python](https://github.com/devzwy/NSFW-Python)、[Python-TensorflowLite-Api](https://tensorflow.google.cn/api_docs/python/tf/lite)、[Python-Tensorflow-Api](https://tensorflow.google.cn/api_docs/python/tf)
 ### Java参考:[Tensorflow-Api](https://tensorflow.google.cn/api_docs/java/reference/org/tensorflow/package-summary)
@@ -17,14 +18,12 @@
 
 ![图片](https://github.com/devzwy/open_nsfw_android/blob/dev/img/demopic.png)
 
-### 🔥🔥🔥🔥🔥🔥已从jCenter仓库迁移到Maven,原引用地址发生变更，建议所有老用户升级到新版本。新版本需要手动下载[nsfw.tflite](https://github.com/devzwy/open_nsfw_android/blob/dev/app/src/main/assets/nsfw.tflite)模型初始化使用 🔥🔥🔥🔥🔥🔥
-
 ### 开始使用
 
-- 🔥__[下载模型文件](https://github.com/devzwy/open_nsfw_android/blob/dev/app/src/main/assets/nsfw.tflite),并放入assets目录下__
+- 🔥 __[下载模型文件](https://github.com/devzwy/open_nsfw_android/blob/dev/app/src/main/assets/nsfw.tflite),并放入assets目录下__
 ![图片](https://github.com/devzwy/open_nsfw_android/blob/dev/img/assets.png)
 
-- 🔥__开启tflite文件读取支持__(解决模型放在assets目录下无法读取的问题。如果模型不放在assets目录下可跳过该步骤)
+- 🔥 __开启tflite文件读取支持__(解决模型放在assets目录下无法读取的问题。如果模型不放在assets目录下可跳过该步骤)
 
 ```
 android {
@@ -36,7 +35,7 @@ android {
     }
 }
 ```
-- 🔥__引入依赖__
+- 🔥 __引入依赖__
 
 ```
     dependencies {
@@ -46,7 +45,7 @@ android {
 
 ```
 
-- 🔥__初始化__（建议在Application中进行）
+- 🔥 __初始化__（建议在Application中进行）
 
 ```
     class KtApp : Application() {
@@ -73,7 +72,7 @@ android {
     }
 ```
 
-- 🔥__支持的api列表__ 带返回值的为同步，传入函数的为异步：
+- 🔥 __支持的api列表__ 带返回值的为同步，传入函数的为异步：
 
 >>>> [NSFWHelper.getNSFWScore(file: File): NSFWScoreBean]()
 
@@ -88,7 +87,7 @@ android {
 >>>> [getNSFWScore(bitmap: Bitmap, onResult: ((NSFWScoreBean) -> Unit))]()
 
 
-- 🔥__识别结果说明__
+- 🔥 __识别结果说明__
 ```
     NSFWScoreBean.sfw   ... 非涉黄数值 数值越大约安全
     NSFWScoreBean.nsfw   ... 涉黄数值  数值越大约危险
@@ -96,7 +95,7 @@ android {
     NSFWScoreBean.timeConsumingToScanData  ... 扫描图片耗时  单位ms
 ```
 
-- 🔥__调用参考__
+- 🔥 __调用参考__
 
 ```
     //异步方式
@@ -127,8 +126,8 @@ android {
 
 ```
 
-### 🔥安卓手机直接[点我安装](http://d.6short.com/q9cv)
+### 🔥 安卓手机直接[点我安装](http://d.6short.com/q9cv)
 
-### 🔥扫码下载
+### 🔥 扫码下载
 
 ![图片](https://github.com/devzwy/open_nsfw_android/blob/dev/img/2.png)

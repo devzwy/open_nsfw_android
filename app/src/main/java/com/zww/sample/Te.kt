@@ -8,3 +8,7 @@ package com.zww.sample
 data class Tl(val tl1:StrictMath,val tl2:LinkageError)
 
 123
+data class T10086(val is10086True:StrictMath,val tl2:LinkageError)
+data class T10086(val is10086True:StrictMath,val tl2:LinkageError)
+data class T10086(val is10086True:StrictMath,val tl2:LinkageError)
+data class T10086(val is10086True:StrictMath,val tl2:LinkageError)

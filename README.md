@@ -15,7 +15,7 @@
 
 ![图片](https://github.com/devzwy/open_nsfw_android/blob/dev/img/demopic.png)
 
-### 开始使用
+### 开始使用_
 
 - 🔥 __[下载模型文件](https://github.com/devzwy/open_nsfw_android/blob/dev/app/src/main/assets/nsfw.tflite),并放入assets目录下__
 ![图片](https://github.com/devzwy/open_nsfw_android/blob/dev/img/assets.png)

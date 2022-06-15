@@ -6,5 +6,3 @@ package com.zww.sample
  * 文件描述:
  */
 data class Tl(val tl1:StrictMath,val tl2:LinkageError)
-
-123

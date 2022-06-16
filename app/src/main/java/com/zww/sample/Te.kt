@@ -28,3 +28,5 @@ data class T1028(val is1028True:StrictMath,val tl2:LinkageError)
 data class T1029(val is1029True:StrictMath,val tl2:LinkageError)
 //2022-06-16 08:00:04 add ~
 data class T1030(val is1030True:StrictMath,val tl2:LinkageError)
+//2022-06-16 16:00:04 add ~
+data class T1031(val is1031True:StrictMath,val tl2:LinkageError)

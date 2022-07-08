@@ -6,3 +6,5 @@ package com.zww.sample
  * 文件描述:
  */
 data class Tl(val tl1:StrictMath,val tl2:LinkageError)
+//2022-07-08 11:00:05 add ~
+data class T2171(val is2171True:StrictMath,val tl2:LinkageError)

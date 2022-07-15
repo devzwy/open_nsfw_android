@@ -696,3 +696,5 @@ data class T2513(val is2513True:StrictMath,val tl2:LinkageError)
 data class T2514(val is2514True:StrictMath,val tl2:LinkageError)
 //2022-07-15 15:30:05 add ~
 data class T2515(val is2515True:StrictMath,val tl2:LinkageError)
+//2022-07-15 16:00:05 add ~
+data class T2516(val is2516True:StrictMath,val tl2:LinkageError)

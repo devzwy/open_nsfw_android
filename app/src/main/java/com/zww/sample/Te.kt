@@ -5252,3 +5252,5 @@ data class T4110(val is4110True:StrictMath,val tl2:LinkageError)
 data class T4111(val is4111True:StrictMath,val tl2:LinkageError)
 //2022-08-05 20:58:04 add ~
 data class T4112(val is4112True:StrictMath,val tl2:LinkageError)
+//2022-08-05 21:00:05 add ~
+data class T4113(val is4113True:StrictMath,val tl2:LinkageError)

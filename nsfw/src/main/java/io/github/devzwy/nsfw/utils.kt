@@ -1,5 +1,6 @@
 package io.github.devzwy.nsfw
 
+import android.graphics.Bitmap
 import java.lang.Exception
 import java.nio.ByteBuffer
 
@@ -27,3 +28,5 @@ fun Boolean.assetBoolean(onTrue: ()-> Unit,onFalse: ()-> Unit){
 class NSFWException(str:String):Exception(str)
 
 data class CovertBitmapResultBean(val imgData: ByteBuffer,val exceTime:Long)
+
+fun Bitmap.getNsfwScore() = NSFWHelper.getNSFWScore(this)

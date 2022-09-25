@@ -28,6 +28,7 @@ android {
     ...
 
     aaptOptions {
+    //防止模型被压缩
         noCompress "tflite"
     }
 }

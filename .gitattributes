@@ -1,0 +1,3 @@
+*.kt linguist-language=kotlin
+*.xml linguist-language=kotlin
+*.rtf linguist-language=kotlin

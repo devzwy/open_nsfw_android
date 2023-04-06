@@ -17,7 +17,9 @@
 
 ### 开始使用_
 
-- 🔥 __[下载模型文件](https://download.fr71.com/open/nsfw.tflite),并放入assets目录下__
+- 🔥 __[下载模型文件](https://download.fr71.com/open/nsfw.tflite)并放入assets目录下__  
+
+
 ![图片](https://github.com/devzwy/open_nsfw_android/blob/dev/img/assets.png)
 
 - 🔥 __开启tflite文件读取支持__(解决模型放在assets目录下无法读取的问题。如果模型不放在assets目录下可跳过该步骤)

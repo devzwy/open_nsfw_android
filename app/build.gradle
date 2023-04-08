@@ -1,17 +1,18 @@
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
-apply plugin: 'kotlin-kapt'
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+}
+
 android {
-    compileSdkVersion 30
-    buildToolsVersion "30.0.2"
+    namespace 'com.example.ona'
+    compileSdk 33
 
     defaultConfig {
-        applicationId "com.zww.sample"
-        minSdkVersion 21
-        targetSdkVersion 30
-        versionCode 139
-        versionName "$libVersion"
+        applicationId "com.example.ona"
+        minSdk 24
+        targetSdk 33
+        versionCode 1
+        versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -21,46 +22,31 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
-        debug {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
 
     aaptOptions {
+        //防止模型被压缩
         noCompress "tflite"
     }
 }
 
 dependencies {
-    implementation fileTree(dir: "libs", include: ["*.jar"])
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation 'androidx.core:core-ktx:1.3.1'
-    implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.1'
 
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
-
-    //权限
-    implementation 'com.yanzhenjie:permission:2.0.3'
-
-    implementation 'androidx.recyclerview:recyclerview:1.0.0'
-    //适配器快速实现
-    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.4'
-    //图片加载框架
-    implementation 'com.github.bumptech.glide:glide:4.11.0'
-    kapt 'com.github.bumptech.glide:compiler:4.11.0'
-
-
-//    implementation 'com.zwy.nsfw:nsfw_initializer:1.3.9'
-//    implementation 'com.zwy.nsfw:nsfw:1.3.9'
-    implementation 'org.tensorflow:tensorflow-lite:2.1.0'
-    implementation 'org.tensorflow:tensorflow-lite-gpu:2.1.0'
-
-//    implementation project(path: ':nsfw_initializer')
+    implementation 'androidx.core:core-ktx:1.7.0'
+    implementation 'androidx.appcompat:appcompat:1.4.1'
+    implementation 'com.google.android.material:material:1.5.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
     implementation project(path: ':nsfw')
-//    implementation 'io.github.devzwy:nsfw:1.5.0'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+
 }

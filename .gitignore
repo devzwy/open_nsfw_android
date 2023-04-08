@@ -1,6 +1,5 @@
 *.iml
 .gradle
-/gradle.properties
 /local.properties
 /.idea/caches
 /.idea/libraries
@@ -12,4 +11,5 @@
 /build
 /captures
 .externalNativeBuild
-/images/TestImagesForNSFW.rtf
+.cxx
+local.properties

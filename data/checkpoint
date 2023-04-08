@@ -1,0 +1,2 @@
+model_checkpoint_path: "nsfw_model.ckpt"
+all_model_checkpoint_paths: "nsfw_model.ckpt"

@@ -2,9 +2,10 @@
 [![](https://img.shields.io/badge/Download-1.5.1-brightgreen.svg)](https://mvnrepository.com/artifact/io.github.devzwy/nsfw)  [![](https://img.shields.io/badge/Base-TensorFlow-brightgreen.svg)](https://github.com/devzwy/open_nsfw_android) [![](https://img.shields.io/badge/license-Apache%202-green.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 [![](https://img.shields.io/badge/%E4%BD%9C%E8%80%85-赵文贇-orange.svg)](https://github.com/devzwy/open_nsfw_android) [![](https://img.shields.io/badge/QQ-3648415-brightgreen.svg)](https://github.com/devzwy/open_nsfw_android) ![Plugin on redmine.org](https://img.shields.io/redmine/plugin/stars/redmine_xlsx_format_issue_exporter?color=1&logo=1)
 
-## 停止维护，部分图片识别可能不准确
+## 该项目从[yahoo-open_nsfw](https://github.com/yahoo/open_nsfw)移植，能力有限，停止维护该库，部分图片识别可能不准确，仅能保证pb模型识别的结果与tflite结果一致，误差不超过0.00001
+>所有相关数据已放在data目录下，需要自取  
 
-### 色情图片离线识别，基于TensorFlow实现。识别只需20ms,可断网测试，成功率99%，调用只要一行代码，从雅虎的开源项目open_nsfw移植，该模型文件可用于iOS、java、C++等平台
+### 色情图片离线识别，基于TensorFlow实现。识别只需20ms,可断网测试，调用只要一行代码，从雅虎的开源项目open_nsfw移植，该模型文件可用于iOS、java、C++等平台
 ### ⚠️⚠️⚠️ 已从jCenter仓库迁移到Maven,原引用地址发生变更，建议所有老用户升级到新版本。新版本需要手动下载[nsfw.tflite](https://github.com/devzwy/open_nsfw_android/blob/dev/app/src/main/assets/nsfw.tflite)模型初始化使用
 ### iOS请参考：[issues13](https://github.com/devzwy/open_nsfw_android/issues/13)
 ### Python参考：[NSFW-Python](https://github.com/devzwy/NSFW-Python)、[Python-TensorflowLite-Api](https://tensorflow.google.cn/api_docs/python/tf/lite)、[Python-Tensorflow-Api](https://tensorflow.google.cn/api_docs/python/tf)
